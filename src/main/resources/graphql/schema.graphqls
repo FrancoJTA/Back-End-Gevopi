@@ -1,4 +1,6 @@
 type Query {
+    todasLasCapacitaciones: [Capacitacion]
+
     # Reportes de un voluntario
     reportesPorVoluntario(voluntarioId: Int!): [Reporte]
 
@@ -22,21 +24,21 @@ type Mutation {
     # Crear evaluación
     crearEvaluacion(input: CrearEvaluacionInput!): Evaluacion
 
-    # Crear respuesta
-    crearRespuesta(input: CrearRespuestaInput!): Respuesta
+    # Crear múltiples respuestas
+    crearRespuestas(input: [CrearRespuestaInput!]!): [Respuesta]
 }
+
 
 # Tipos de entrada para mutaciones
 input CrearEvaluacionInput {
-    testId: Int!
-    historialId: Int!
+    testId: Int
+    voluntarioId: Int!
 }
 
 input CrearRespuestaInput {
     evaluacionId: Int!
     preguntaId: Int!
-    textoPregunta: String!
-    respuestaTexto: String
+    respuestaTexto: String!  # Ahora solo necesitamos el ID de pregunta y la respuesta
 }
 
 # Tipos de entidad

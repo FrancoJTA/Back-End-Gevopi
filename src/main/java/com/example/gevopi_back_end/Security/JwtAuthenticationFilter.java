@@ -40,6 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         // quitar la condicion graphql
         // path.startsWith("/graphql")
+
+        System.out.println("HOLA");
+
         if (path.startsWith("/graphiql") || path.startsWith("/graphql") || path.startsWith("/graphql/tests")) {
             filterChain.doFilter(request, response);
             return;

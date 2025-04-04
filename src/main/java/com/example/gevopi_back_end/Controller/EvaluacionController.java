@@ -25,62 +25,62 @@ public class EvaluacionController {
 
     @MutationMapping
     public Evaluacion crearEvaluacion(@Argument("input") CrearEvaluacionInput input) {
-        // Validación del input
+        // Validación básica del input
         if (input == null) {
             throw new DatosInvalidosException("El input de evaluación no puede ser nulo");
         }
 
-        // Validación de campos obligatorios
-        if (input.getTestId() == null) {
-            throw new DatosInvalidosException("El ID del test es requerido");
-        }
-        if (input.getHistorialId() == null) {
-            throw new DatosInvalidosException("El ID del historial clínico es requerido");
+        // Validación del historial clínico (obligatorio)
+        if (input.getvoluntarioIdd() == null || input.getvoluntarioIdd() <= 0) {
+            throw new DatosInvalidosException("Se requiere un ID de historial clínico válido");
         }
 
-        // Validación de IDs positivos
-        if (input.getTestId() <= 0) {
-            throw new DatosInvalidosException("El ID del test debe ser un número positivo");
-        }
-        if (input.getHistorialId() <= 0) {
-            throw new DatosInvalidosException("El ID del historial clínico debe ser un número positivo");
-        }
-
-        // Buscar test con manejo de excepciones
-        Test test = testRepository.findById(input.getTestId())
+        // Buscar historial clínico
+        HistorialClinico historial = historialRepository.findByIdVoluntario(input.getvoluntarioIdd())
                 .orElseThrow(() -> new RecursoNoEncontradoException(
-                        "Test con ID " + input.getTestId() + " no encontrado",
+                        "Historial clínico no encontrado con ID: " + input.getvoluntarioIdd(),
                         ErrorType.NOT_FOUND));
+        int fisico = 1;
+        int emocional = 2;
 
-        // Buscar historial clínico con manejo de excepciones
-        HistorialClinico historial = historialRepository.findById(input.getHistorialId())
+        Evaluacion evaluacionFisica = new Evaluacion();
+        Evaluacion evaluacionEmocional = new Evaluacion();
+        evaluacionEmocional.setHistorialClinico(historial);
+        evaluacionEmocional.setFecha(new Date());
+        evaluacionFisica.setHistorialClinico(historial);
+        evaluacionFisica.setFecha(new Date());
+        Test test = testRepository.findById(fisico)
                 .orElseThrow(() -> new RecursoNoEncontradoException(
-                        "Historial clínico con ID " + input.getHistorialId() + " no encontrado",
+                        "Test no encontrado con ID: " + input.getTestId(),
                         ErrorType.NOT_FOUND));
+        evaluacionFisica.setTest(test);
 
-        // Crear y guardar la evaluación
-        Evaluacion evaluacion = new Evaluacion();
-        evaluacion.setTest(test);
-        evaluacion.setHistorialClinico(historial);
-        evaluacion.setFecha(new Date());
+        Test test2 = testRepository.findById(emocional)
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Test no encontrado con ID: " + input.getTestId(),
+                        ErrorType.NOT_FOUND));
+        evaluacionEmocional.setTest(test2);
 
         try {
-            return evaluacionRepository.save(evaluacion);
+            evaluacionRepository.save(evaluacionEmocional);
+            System.out.println("http://localhost:3000/Formulario?evaluacionFisica="+evaluacionFisica.getId()+"&evaluacionEmocional="+evaluacionEmocional.getId());
+            return evaluacionRepository.save(evaluacionFisica);
         } catch (Exception e) {
             throw new PersistenciaException(
                     "Error al guardar la evaluación: " + e.getMessage(), e);
         }
     }
 
+
     // Clase interna para el input
     public static class CrearEvaluacionInput {
         private Integer testId;
-        private Integer historialId;
+        private Integer voluntarioId;
 
         // Getters y setters
         public Integer getTestId() { return testId; }
         public void setTestId(Integer testId) { this.testId = testId; }
-        public Integer getHistorialId() { return historialId; }
-        public void setHistorialId(Integer historialId) { this.historialId = historialId; }
+        public Integer getvoluntarioIdd() { return voluntarioId; }
+        public void setvoluntarioId(Integer historialId) { this.voluntarioId = historialId; }
     }
 }

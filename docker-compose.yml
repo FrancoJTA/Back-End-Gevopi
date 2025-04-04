@@ -1,0 +1,14 @@
+services:
+  gevopi_backend:
+    build: .
+    image: gevopi_back_image
+    ports:
+      - "8080:8080"
+    # Conecta este contenedor a la misma red que tu contenedor SQL Server
+    networks:
+      - gevopi-network
+
+# Usa la red a la que ya está conectado tu contenedor SQL Server
+networks:
+  gevopi-network:
+    external: true

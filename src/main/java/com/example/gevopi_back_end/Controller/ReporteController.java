@@ -50,50 +50,17 @@ public class ReporteController {
 
     @SchemaMapping(typeName = "Reporte", field = "evaluaciones")
     public Set<Evaluacion> evaluacionesPorReporte(Reporte reporte) {
-        try {
-            Set<Evaluacion> evaluaciones = reporte.getEvaluaciones();
-            if (evaluaciones == null || evaluaciones.isEmpty()) {
-                throw new RecursoNoEncontradoException(
-                        "No se encontraron evaluaciones para el reporte con ID: " + reporte.getId(),
-                        ErrorType.NOT_FOUND);
-            }
-            return evaluaciones;
-        } catch (Exception e) {
-            throw new PersistenciaException(
-                    "Error al recuperar las evaluaciones del reporte: " + e.getMessage(), e);
-        }
+        return reporte.getEvaluaciones(); // Puede ser null o vacío
     }
 
     @SchemaMapping(typeName = "Reporte", field = "capacitaciones")
     public Set<Capacitacion> capacitacionesPorReporte(Reporte reporte) {
-        try {
-            Set<Capacitacion> capacitaciones = reporte.getCapacitaciones();
-            if (capacitaciones == null || capacitaciones.isEmpty()) {
-                throw new RecursoNoEncontradoException(
-                        "No se encontraron capacitaciones para el reporte con ID: " + reporte.getId(),
-                        ErrorType.NOT_FOUND);
-            }
-            return capacitaciones;
-        } catch (Exception e) {
-            throw new PersistenciaException(
-                    "Error al recuperar las capacitaciones del reporte: " + e.getMessage(), e);
-        }
+        return reporte.getCapacitaciones();
     }
 
     @SchemaMapping(typeName = "Reporte", field = "necesidades")
     public Set<Necesidad> necesidadesPorReporte(Reporte reporte) {
-        try {
-            Set<Necesidad> necesidades = reporte.getNecesidades();
-            if (necesidades == null || necesidades.isEmpty()) {
-                throw new RecursoNoEncontradoException(
-                        "No se encontraron necesidades para el reporte con ID: " + reporte.getId(),
-                        ErrorType.NOT_FOUND);
-            }
-            return necesidades;
-        } catch (Exception e) {
-            throw new PersistenciaException(
-                    "Error al recuperar las necesidades del reporte: " + e.getMessage(), e);
-        }
+        return reporte.getNecesidades(); // Puede ser null o vacío
     }
 
     // Excepciones personalizadas (pueden estar en una clase aparte para reutilizar)

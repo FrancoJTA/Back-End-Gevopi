@@ -13,6 +13,11 @@ import java.util.*;
 
 @Controller
 public class CapacitacionController {
+    @Autowired
+    private CapacitacionRepository capacitacionRepository;
 
-
+    @QueryMapping
+    public List<Capacitacion> todasLasCapacitaciones() {
+        return capacitacionRepository.findAll();
+    }
 }
