@@ -1,0 +1,106 @@
+type Query {
+    # Reportes de un voluntario
+    reportesPorVoluntario(voluntarioId: Int!): [Reporte]
+
+    # Evaluaciones según reporte
+    evaluacionesPorReporte(reporteId: Int!): [Evaluacion]
+
+    # Capacitaciones según reporte
+    capacitacionesPorReporte(reporteId: Int!): [Capacitacion]
+
+    # Necesidades según reporte
+    necesidadesPorReporte(reporteId: Int!): [Necesidad]
+
+    # Historial clínico de un voluntario
+    historialPorVoluntario(voluntarioId: Int!): HistorialClinico
+
+    # Preguntas de un test
+    preguntasPorTest(testId: Int!): [Pregunta]
+}
+
+type Mutation {
+    # Crear evaluación
+    crearEvaluacion(input: CrearEvaluacionInput!): Evaluacion
+
+    # Crear respuesta
+    crearRespuesta(input: CrearRespuestaInput!): Respuesta
+}
+
+# Tipos de entrada para mutaciones
+input CrearEvaluacionInput {
+    testId: Int!
+    historialId: Int!
+}
+
+input CrearRespuestaInput {
+    evaluacionId: Int!
+    preguntaId: Int!
+    textoPregunta: String!
+    respuestaTexto: String
+}
+
+# Tipos de entidad
+type Test {
+    id: Int!
+    nombre: String!
+    descripcion: String
+    categoria: String
+    preguntas: [Pregunta]
+}
+
+type Pregunta {
+    id: Int!
+    texto: String!
+    tipo: String
+    test: Test
+}
+
+type HistorialClinico {
+    id: Int!
+    idVoluntario: Int!
+    fechaInicio: String!
+    fechaActualizacion: String
+    reportes: [Reporte]
+}
+
+type Evaluacion {
+    id: Int!
+    test: Test
+    historialClinico: HistorialClinico
+    fecha: String!
+    respuestas: [Respuesta]
+}
+
+type Respuesta {
+    id: Int!
+    evaluacion: Evaluacion
+    pregunta: Pregunta
+    textoPregunta: String!
+    respuestaTexto: String
+}
+
+type Reporte {
+    id: Int!
+    historialClinico: HistorialClinico
+    fechaGenerado: String!
+    resumenFisico: String
+    resumenEmocional: String
+    estadoGeneral: String
+    recomendaciones: String
+    observaciones: String
+    evaluaciones: [Evaluacion]
+    necesidades: [Necesidad]
+    capacitaciones: [Capacitacion]
+}
+
+type Necesidad {
+    id: Int!
+    tipo: String
+    descripcion: String
+}
+
+type Capacitacion {
+    id: Int!
+    nombre: String
+    descripcion: String
+}
