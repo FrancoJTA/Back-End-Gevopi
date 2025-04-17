@@ -63,8 +63,12 @@ public class EvaluacionController {
 
         try {
             evaluacionRepository.save(evaluacionEmocional);
-            System.out.println("http://localhost:3000/Formulario?evaluacionFisica="+evaluacionFisica.getId()+"&evaluacionEmocional="+evaluacionEmocional.getId());
-            return evaluacionRepository.save(evaluacionFisica);
+            evaluacionRepository.save(evaluacionFisica);
+
+            System.out.println("http://localhost:3000/Formulario?evaluacionFisica=" + evaluacionFisica.getId()
+                    + "&evaluacionEmocional=" + evaluacionEmocional.getId());
+
+            return evaluacionFisica;
         } catch (Exception e) {
             throw new PersistenciaException(
                     "Error al guardar la evaluación: " + e.getMessage(), e);
