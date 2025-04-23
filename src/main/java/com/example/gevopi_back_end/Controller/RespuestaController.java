@@ -105,8 +105,6 @@ public class RespuestaController {
 
         // 2. Crear el reporte
         Reporte reporte = new Reporte();
-        reporte.setHistorialClinico(evaluacionFisica.getHistorialClinico());
-        reporte.setFechaGenerado(new Date());
         reporte.setResumenFisico(resumenFisico);
         reporte.setResumenEmocional(resumenEmocional);
         reporte.setEstadoGeneral(estadoGeneral);

@@ -11,5 +11,5 @@ import java.util.List;
 public interface ReporteRepository  extends JpaRepository<Reporte, Integer> {
 
 
-    List<Reporte> findByHistorialClinicoId(Integer historialId);
+    List<Reporte> findByHistorialClinico_Id(Integer idHistorial);
 }

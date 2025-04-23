@@ -1,55 +1,42 @@
 package com.example.gevopi_back_end.Entity;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "Reporte")
 public class Reporte {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @EqualsAndHashCode.Include
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Historial")
+    @JsonIgnoreProperties("reportes")
     private HistorialClinico historialClinico;
 
-    private java.util.Date fechaGenerado;
-
+    private LocalDateTime fechaGenerado;
     private String resumenFisico;
-
     private String resumenEmocional;
-
     private String estadoGeneral;
-
     private String recomendaciones;
-
     private String observaciones;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Reporte_Evaluacion",
-            joinColumns = @JoinColumn(name = "ID_Reporte"),
-            inverseJoinColumns = @JoinColumn(name = "ID_Evaluacion")
-    )
-    private Set<Evaluacion> evaluaciones;
-
-    @ManyToMany
-    @JoinTable(
-            name = "Reporte_Necesidad",
-            joinColumns = @JoinColumn(name = "ID_Reporte"),
-            inverseJoinColumns = @JoinColumn(name = "ID_Necesidad")
-    )
-    private Set<Necesidad> necesidades;
+    @OneToMany(mappedBy = "reporte", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("reporte")
+    private Set<Evaluacion> evaluaciones = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -57,5 +44,15 @@ public class Reporte {
             joinColumns = @JoinColumn(name = "ID_Reporte"),
             inverseJoinColumns = @JoinColumn(name = "ID_Capacitacion")
     )
-    private Set<Capacitacion> capacitaciones;
+    @JsonIgnoreProperties("reportes")
+    private Set<Capacitacion> capacitaciones = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "Reporte_Necesidad",
+            joinColumns = @JoinColumn(name = "ID_Reporte"),
+            inverseJoinColumns = @JoinColumn(name = "ID_Necesidad")
+    )
+    @JsonIgnoreProperties("reportes")
+    private Set<Necesidad> necesidades = new HashSet<>();
 }

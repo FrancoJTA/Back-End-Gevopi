@@ -1,30 +1,31 @@
 package com.example.gevopi_back_end.Entity;
 
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import lombok.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "Historial_Clinico")
 public class HistorialClinico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @EqualsAndHashCode.Include
+    private Integer id;
 
-    private int idVoluntario;
-
-    private java.sql.Date fechaInicio;
-
-    private java.sql.Date fechaActualizacion;
+    private LocalDateTime fechaInicio;
+    private LocalDateTime fechaActualizacion;
 
     @OneToMany(mappedBy = "historialClinico", fetch = FetchType.LAZY)
-    private Set<Reporte> reportes;
+    @JsonIgnoreProperties("historialClinico")
+    private Set<Reporte> reportes = new HashSet<>();
 }

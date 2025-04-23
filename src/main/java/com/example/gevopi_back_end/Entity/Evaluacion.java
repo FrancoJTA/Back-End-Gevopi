@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -24,12 +22,10 @@ public class Evaluacion {
     @JoinColumn(name = "ID_Test")
     private Test test;
 
+
+    private LocalDateTime fecha;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Historial")
-    private HistorialClinico historialClinico;  // Relación con HistorialClinico
-
-    private java.util.Date fecha;
-
-    @ManyToMany(mappedBy = "evaluaciones")
-    private Set<Reporte> reportes = new HashSet<>();
+    @JoinColumn(name = "ID_Reporte")
+    private Reporte reporte;
 }
