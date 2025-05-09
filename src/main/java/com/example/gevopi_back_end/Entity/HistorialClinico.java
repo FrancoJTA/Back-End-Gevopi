@@ -18,7 +18,6 @@ import java.util.Set;
 public class HistorialClinico {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Integer id;
 

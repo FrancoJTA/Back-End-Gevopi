@@ -10,9 +10,6 @@ import java.util.List;
 
 public interface RespuestaRepository extends JpaRepository<Respuesta, Integer> {
 
-    @Query("SELECT r FROM Respuesta r WHERE r.evaluacion = :evaluacion")
-    List<Respuesta> findByEvaluacion(@Param("evaluacion") Evaluacion evaluacion);
+    List<Respuesta> findByEvaluacionId(int evaluacionId);
 
-    @Query("SELECT r FROM Respuesta r WHERE r.evaluacion.id = :evaluacionId")
-    List<Respuesta> findByEvaluacionId(@Param("evaluacionId") Integer evaluacionId);
 }

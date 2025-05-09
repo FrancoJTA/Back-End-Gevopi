@@ -1,8 +1,67 @@
 type Query {
-    obtenerHistorialClinico(id: ID!): HistorialClinico
-    obtenerHistorialesClinicos: [HistorialClinico]
-    obtenerReporte(id: ID!): [Reporte]
 
+    obtenerDashboard:Dashboard
+
+    listaVoluntarios:[Reporte!]
+
+    obtenerPreguntasPorTests: PreguntasPorTest!
+
+    obtenerCapacitaciones: [Capacitacion!]
+
+    obtenerNecesidades: [Necesidad!]
+
+    ultimoReporteVoluntario(historialId: Int): Reporte!
+
+    reportesVoluntarios(historialId: Int): [Reporte!]
+
+    evaluacionesVoluntarios(historialId: Int): [Evaluacion!]
+}
+
+type Mutation {
+
+    actualizarPregunta(id: ID!, texto: String!): Pregunta
+    agregarPregunta(testId: ID!, texto: String!, tipo: String!): Pregunta
+    eliminarPregunta(id: ID!): Boolean
+
+    crearCapacitacion(nombre: String!, descripcion: String!): Capacitacion
+    editarCapacitacion(id: ID!, nombre: String, descripcion: String): Capacitacion
+    eliminarCapacitacion(id: ID!): Boolean
+
+    crearNecesidad(tipo: String!, descripcion: String!): Necesidad
+    editarNecesidad(id: ID!, tipo: String, descripcion: String): Necesidad
+    eliminarNecesidad(id: ID!): Boolean
+
+    crearEvaluacion(id: ID!):Boolean
+
+    enviarRespuestas(input: ReporteEvaluacionInput!): Boolean!
+}
+
+input RespuestaInput {
+    preguntaId: Int!
+    textoPregunta: String!
+    respuestaTexto: String!
+}
+
+input EvaluacionRespuestaInput {
+    evaluacionId: Int!
+    respuestas: [RespuestaInput!]!
+}
+
+input ReporteEvaluacionInput {
+    reporteId: Int!
+    evaluaciones: [EvaluacionRespuestaInput!]!
+}
+
+
+type PreguntasPorTest {
+    test1: [Pregunta!]
+    test2: [Pregunta!]
+}
+
+type Dashboard{
+    reportes:[Reporte!]
+    report_cantidad: Int!
+    eva_cantidad:Int!
 }
 
 type HistorialClinico {
@@ -23,6 +82,7 @@ type Reporte {
     evaluaciones: [Evaluacion!]
     capacitaciones: [Capacitacion!]
     necesidades: [Necesidad!]
+    historialClinico: HistorialClinico!
 }
 
 type Evaluacion {
