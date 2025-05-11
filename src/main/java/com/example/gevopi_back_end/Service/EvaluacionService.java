@@ -25,7 +25,7 @@ public class EvaluacionService {
     }
 
     public List<Evaluacion> obtenerEvaluacionesConRespuestas(Integer historialId) {
-        return evaluacionRepository.findEvaluacionesWithRespuestasByHistorialId(historialId);
+        return evaluacionRepository.findAllByHistorialId(historialId);
     }
 
     public Optional<Evaluacion> obtenerEvaluacionConRespuestas(int id) {
