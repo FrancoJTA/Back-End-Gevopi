@@ -7,6 +7,7 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class EvaluacionesController {
@@ -16,11 +17,13 @@ public class EvaluacionesController {
     // Obtener todas las evaluaciones de un historial clínico con respuestas
     @QueryMapping
     public List<Evaluacion> evaluacionesVoluntarios(@Argument Integer historialId) {
-        return evaluacionService.obtenerEvaluacionesConRespuestas(historialId);
+        return evaluacionService.obtenerEvaluacionesPorHistorial(historialId);
     }
+
+    // Obtener UNA evaluación por su ID
     @QueryMapping
     public Evaluacion obtenerEvaluacionPorId(@Argument int id) {
-        return evaluacionService.obtenerEvaluacionConRespuestas(id).orElse(null);
+        return evaluacionService.obtenerEvaluacionPorId(id).orElse(null);
     }
 
 }

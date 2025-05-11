@@ -14,6 +14,7 @@ public class EvaluacionService {
 
     @Autowired
     private EvaluacionRepository evaluacionRepository;
+
     @Autowired
     private RespuestaRepository respuestaRepository;
 
@@ -24,11 +25,12 @@ public class EvaluacionService {
                 .count();
     }
 
-    public List<Evaluacion> obtenerEvaluacionesConRespuestas(Integer historialId) {
+    public List<Evaluacion> obtenerEvaluacionesPorHistorial(Integer historialId) {
         return evaluacionRepository.findAllByHistorialId(historialId);
     }
 
-    public Optional<Evaluacion> obtenerEvaluacionConRespuestas(int id) {
+    // 🔵 Obtener una evaluación por su ID
+    public Optional<Evaluacion> obtenerEvaluacionPorId(int id) {
         return evaluacionRepository.findById(id);
     }
 
