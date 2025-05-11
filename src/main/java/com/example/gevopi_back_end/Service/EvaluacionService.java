@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EvaluacionService {
@@ -26,4 +27,9 @@ public class EvaluacionService {
     public List<Evaluacion> obtenerEvaluacionesConRespuestas(Integer historialId) {
         return evaluacionRepository.findEvaluacionesWithRespuestasByHistorialId(historialId);
     }
+
+    public Optional<Evaluacion> obtenerEvaluacionConRespuestas(int id) {
+        return evaluacionRepository.findById(id);
+    }
+
 }

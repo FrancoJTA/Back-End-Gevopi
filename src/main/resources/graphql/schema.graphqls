@@ -10,11 +10,11 @@ type Query {
 
     obtenerNecesidades: [Necesidad!]
 
-    ultimoReporteVoluntario(historialId: Int): Reporte!
-
     reportesVoluntarios(historialId: Int): [Reporte!]
 
     evaluacionesVoluntarios(historialId: Int): [Evaluacion!]
+
+    obtenerEvaluacionPorId(id: Int!): Evaluacion
 }
 
 type Mutation {
@@ -34,6 +34,9 @@ type Mutation {
     crearEvaluacion(id: ID!):Boolean
 
     enviarRespuestas(input: ReporteEvaluacionInput!): Boolean!
+
+    agregarCapacitacionesAReporte(reporteId: Int!, capacitacionIds: [Int!]!): Boolean
+    agregarNecesidadesAReporte(reporteId: Int!, necesidadIds: [Int!]!): Boolean
 }
 
 input RespuestaInput {

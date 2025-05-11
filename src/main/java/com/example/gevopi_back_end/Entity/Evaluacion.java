@@ -1,11 +1,14 @@
 package com.example.gevopi_back_end.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -28,4 +31,8 @@ public class Evaluacion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_Reporte")
     private Reporte reporte;
+
+    @OneToMany(mappedBy = "evaluacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("evaluacion") // Previene recursividad en serialización
+    private Set<Respuesta> respuestas = new HashSet<>();
 }

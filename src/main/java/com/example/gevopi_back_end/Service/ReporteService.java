@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,10 @@ public class ReporteService {
     private PreguntaRepository preguntaRepository;
     @Autowired
     private RespuestaRepository respuestaRepository;
+    @Autowired
+    private CapacitacionRepository capacitacionRepository;
+    @Autowired
+    private NecesidadRepository necesidadRepository;
     @Autowired
     private WebClient webClient;
 
@@ -187,4 +192,31 @@ public class ReporteService {
         reporteRepository.save(reporte);
         return true;
     }
+
+    @Transactional
+    public Boolean agregarCapacitacionesAReporte(Integer reporteId, List<Integer> capacitacionIds) {
+        Optional<Reporte> reporteOpt = reporteRepository.findById(reporteId);
+        if (reporteOpt.isEmpty()) return false;
+
+        Reporte reporte = reporteOpt.get();
+        List<Capacitacion> capacitaciones = capacitacionRepository.findAllById(capacitacionIds);
+        reporte.getCapacitaciones().addAll(capacitaciones);
+
+        reporteRepository.save(reporte);
+        return true;
+    }
+
+    @Transactional
+    public Boolean agregarNecesidadesAReporte(Integer reporteId, List<Integer> necesidadIds) {
+        Optional<Reporte> reporteOpt = reporteRepository.findById(reporteId);
+        if (reporteOpt.isEmpty()) return false;
+
+        Reporte reporte = reporteOpt.get();
+        List<Necesidad> necesidades = necesidadRepository.findAllById(necesidadIds);
+        reporte.getNecesidades().addAll(necesidades);
+
+        reporteRepository.save(reporte);
+        return true;
+    }
+
 }

@@ -18,16 +18,13 @@ public class DashboardController {
 
     @QueryMapping
     public Map<String, Object> obtenerDashboard() {
-        // Obtener los últimos 3 reportes generados
+
         List<Reporte> reportesUltimos3 = reporteService.obtenerUltimos3Reportes();
 
-        // Obtener la cantidad de reportes generados en las últimas 24 horas
         long cantidadReportesUltimas24Horas = reporteService.countReportesUltimas24Horas();
 
-        // Obtener la cantidad de evaluaciones completas
         long cantidadEvaluacionesCompletas = evaluacionService.evaluacionesCompletas();
 
-        // Crear un mapa para almacenar los resultados
         Map<String, Object> dashboardData = new HashMap<>();
         dashboardData.put("reportes", reportesUltimos3);
         dashboardData.put("report_cantidad", (int) cantidadReportesUltimas24Horas);

@@ -18,4 +18,9 @@ public class EvaluacionesController {
     public List<Evaluacion> evaluacionesVoluntarios(@Argument Integer historialId) {
         return evaluacionService.obtenerEvaluacionesConRespuestas(historialId);
     }
+    @QueryMapping
+    public Evaluacion obtenerEvaluacionPorId(@Argument int id) {
+        return evaluacionService.obtenerEvaluacionConRespuestas(id).orElse(null);
+    }
+
 }
