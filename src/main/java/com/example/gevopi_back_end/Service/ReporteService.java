@@ -76,8 +76,8 @@ public class ReporteService {
                 reporteRepository.save(nuevoReporte);
 
                 // Obtener los Test con ID 1 y ID 2 desde la base de datos
-                Optional<Test> test1Opt = testRepository.findById(1);
-                Optional<Test> test2Opt = testRepository.findById(2);
+                Optional<Test> test1Opt = testRepository.findById(3);
+                Optional<Test> test2Opt = testRepository.findById(4);
 
                 if (test1Opt.isPresent() && test2Opt.isPresent()) {
                     Test test1 = test1Opt.get();
