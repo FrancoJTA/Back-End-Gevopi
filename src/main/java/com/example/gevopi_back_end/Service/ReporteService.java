@@ -117,7 +117,7 @@ public class ReporteService {
         String endpoint = tipo == 1 ? "/generar_fisico" : "/generar_emocion";
         Map<String, Object> body = Map.of("evaluacion", textoEvaluacion);
 
-        return WebClient.create("http://IA_API:5000")
+        return WebClient.create("http://ia-python-api:5000")
                 .post()
                 .uri(endpoint)
                 .bodyValue(body)
