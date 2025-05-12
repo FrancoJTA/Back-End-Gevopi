@@ -177,10 +177,10 @@ public class ReporteService {
             String respuestaApi = enviarEvaluacionAlApi(textoEvaluacion, tipo);
 
             // 4. Guardar en resumen físico/emocional
-            if (tipo == 1) {
+            if (tipo == 3) {
                 resumenFisico.append(respuestaApi);
                 reporte.setResumenFisico(respuestaApi);
-            } else if (tipo == 2) {
+            } else if (tipo == 4) {
                 resumenEmocional.append(respuestaApi);
                 reporte.setResumenEmocional(respuestaApi);
             }
