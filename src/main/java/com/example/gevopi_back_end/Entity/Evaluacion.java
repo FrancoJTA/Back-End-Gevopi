@@ -20,6 +20,7 @@ public class Evaluacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
