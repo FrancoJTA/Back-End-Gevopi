@@ -28,11 +28,16 @@ public class Reporte {
     private HistorialClinico historialClinico;
 
     private LocalDateTime fechaGenerado;
+    @Column(length = 2000)
+    private String observaciones;
+
+    @Column(length = 1000)
     private String resumenFisico;
+
+    @Column(length = 1000)
     private String resumenEmocional;
     private String estadoGeneral;
     private String recomendaciones;
-    private String observaciones;
 
     @OneToMany(mappedBy = "reporte", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("reporte")
