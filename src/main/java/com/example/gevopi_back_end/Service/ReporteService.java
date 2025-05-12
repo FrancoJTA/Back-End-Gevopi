@@ -146,6 +146,7 @@ public class ReporteService {
         }
     }
     public Boolean enviarRespuestas(Map<String, Object> input) {
+
         Integer reporteId = (Integer) input.get("reporteId");
         List<Map<String, Object>> evaluaciones = (List<Map<String, Object>>) input.get("evaluaciones");
 
@@ -188,7 +189,10 @@ public class ReporteService {
         // 5. Guardar resumen combinado en observaciones
         String resumenFinal = resumenFisico + " " + resumenEmocional;
         reporte.setObservaciones(resumenFinal);
-
+        Object estadoObj = input.get("estado");
+        if (estadoObj != null) {
+            reporte.setEstadoGeneral(estadoObj.toString());
+        }
         reporteRepository.save(reporte);
         return true;
     }

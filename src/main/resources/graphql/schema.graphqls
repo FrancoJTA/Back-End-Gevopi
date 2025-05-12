@@ -54,6 +54,7 @@ input EvaluacionRespuestaInput {
 }
 
 input ReporteEvaluacionInput {
+    estado: String
     reporteId: Int!
     evaluaciones: [EvaluacionRespuestaInput!]!
 }
