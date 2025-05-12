@@ -15,6 +15,9 @@ type Query {
     evaluacionesVoluntarios(historialId: Int): [Evaluacion!]
 
     obtenerEvaluacionPorId(id: Int!): Evaluacion
+
+    preguntasPorTest(testId: Int!): [Pregunta]
+
 }
 
 type Mutation {
