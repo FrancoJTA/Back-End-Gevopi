@@ -41,7 +41,7 @@ type Mutation {
     agregarCapacitacionesAReporte(reporteId: Int!, capacitacionIds: [Int!]!): Boolean
     agregarNecesidadesAReporte(reporteId: Int!, necesidadIds: [Int!]!): Boolean
 
-    registro(input: UsuarioInput!): Usuario
+    nuevoUsuarioGlobal(input: UsuarioInput!): Usuario
     login(ci: String!, password: String!): Usuario
 }
 

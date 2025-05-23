@@ -22,7 +22,7 @@ public class UsuarioController {
     }
 
     @MutationMapping
-    public Usuario registro(@Argument("input") Usuario input) {
+    public Usuario nuevoUsuarioGlobal(@Argument("input") Usuario input) {
         return usuarioService.registrarUsuario(input);
     }
 
