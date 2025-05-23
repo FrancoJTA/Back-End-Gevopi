@@ -8,6 +8,8 @@ import com.example.gevopi_back_end.Repository.UsuarioRepository;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -26,23 +28,44 @@ public class UsuarioService {
         }
         Usuario savedUser = usuarioRepository.save(usuario);
 
+        // Construir mutación GraphQL
+        String mutation = "mutation Mutation($input: UsuarioInput!) { nuevoUsuarioGlobal(input: $input) { id } }";
+
+        // Variables para la mutación
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("input", userToMap(savedUser));
+
+        // Body completo de la petición GraphQL
+        Map<String, Object> body = new HashMap<>();
+        body.put("query", mutation);
+        body.put("variables", variables);
+
         try {
             webClient.post()
                     .uri(EXTERNAL_API_URL)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(savedUser)
+                    .bodyValue(body)
                     .retrieve()
-                    .bodyToMono(String.class)  // O puedes definir un DTO si quieres parsear la respuesta
+                    .bodyToMono(String.class)
                     .block();
         } catch (WebClientResponseException ex) {
-            // Aquí puedes manejar errores específicos de la llamada externa
             throw new RuntimeException("Error enviando usuario a API externa: " + ex.getResponseBodyAsString());
         } catch (Exception e) {
-            // Otros errores (timeout, conexión, etc)
             throw new RuntimeException("Error enviando usuario a API externa: " + e.getMessage());
         }
 
         return savedUser;
+    }
+
+    private Map<String, Object> userToMap(Usuario user) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("nombre", user.getNombre());
+        map.put("apellido", user.getApellido());
+        map.put("email", user.getEmail());
+        map.put("telefono", user.getTelefono());
+        map.put("ci", user.getCi());
+        map.put("password", user.getPassword());
+        return map;
     }
 
     // Login (validación en texto plano)
