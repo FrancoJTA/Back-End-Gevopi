@@ -1,19 +1,24 @@
 package com.example.gevopi_back_end.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "Usuario")
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private int id;
 
     private String nombre;
@@ -28,5 +33,14 @@ public class Usuario {
 
     private String password;
 
+
+    @ManyToMany
+    @JoinTable(
+            name = "Usuario_Rol",
+            joinColumns = @JoinColumn(name = "ID_Usuario"),
+            inverseJoinColumns = @JoinColumn(name = "ID_Rol")
+    )
+    @JsonIgnoreProperties("")
+    private Set<Rol> roles = new HashSet<>();
 
 }
