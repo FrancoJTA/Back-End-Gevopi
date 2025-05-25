@@ -9,24 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Usuario")
-public class Usuario {
-
+@Table(name = "Rol")
+public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String nombre;
-    private String apellido;
-    private String email;
-
-    @Column(name = "CI", unique = true)
-    private String ci;
-
-    @Column(name = "teléfono")
-    private String telefono;
-
-    private String password;
-
 
 }

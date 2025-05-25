@@ -34,15 +34,33 @@ type Mutation {
     editarNecesidad(id: ID!, tipo: String, descripcion: String): Necesidad
     eliminarNecesidad(id: ID!): Boolean
 
-    crearEvaluacion(id: ID!):Boolean
+    crearEvaluacion(id: ID!): Boolean
 
     enviarRespuestas(input: ReporteEvaluacionInput!): Boolean!
 
     agregarCapacitacionesAReporte(reporteId: Int!, capacitacionIds: [Int!]!): Boolean
     agregarNecesidadesAReporte(reporteId: Int!, necesidadIds: [Int!]!): Boolean
 
-    nuevoUsuarioGlobal(input: UsuarioInput!): Usuario
+    registroUsuario(input: UsuarioInput!): Usuario
+    nuevoUsuarioGlobal(input: UsuarioGlobalInput!): UsuarioGlobal
     login(ci: String!, password: String!): Usuario
+
+}
+
+input UsuarioInput {
+    nombre: String!
+    apellido: String!
+    email: String!
+    ci: String!
+    telefono: String!
+}
+
+input UsuarioGlobalInput {
+    nombre: String!
+    apellido: String!
+    email: String!
+    ci: String!
+    telefono: String!
 }
 
 input RespuestaInput {
@@ -62,6 +80,24 @@ input ReporteEvaluacionInput {
     evaluaciones: [EvaluacionRespuestaInput!]!
 }
 
+type Usuario {
+    id: ID!
+    nombre: String!
+    apellido: String!
+    email: String!
+    ci: String!
+    telefono: String!
+    password:String
+}
+
+type UsuarioGlobal {
+    id: ID!
+    nombre: String!
+    apellido: String!
+    email: String!
+    ci: String!
+    telefono: String!
+}
 
 type PreguntasPorTest {
     test1: [Pregunta!]
@@ -133,23 +169,4 @@ type Necesidad {
     id: ID!
     tipo: String!
     descripcion: String
-}
-
-type Usuario {
-    id: ID!
-    nombre: String!
-    apellido: String!
-    email: String!
-    ci: String!
-    telefono: String!
-    password: String!
-}
-
-input UsuarioInput {
-    nombre: String!
-    apellido: String!
-    email: String!
-    ci: String!
-    telefono: String!
-    password: String!
 }
