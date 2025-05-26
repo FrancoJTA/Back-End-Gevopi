@@ -91,14 +91,21 @@ public class UsuarioService {
 
         Usuario usuario = optionalUsuario.get();
 
-        // Validar contraseña
         if (!usuario.getPassword().equals(password)) {
             acceso.setAcceso(false);
             acceso.setToken("");
             return acceso;
         }
 
-        // Usuario autenticado correctamente
+        boolean tieneRolPermitido = usuario.getRoles().stream()
+                .anyMatch(rol -> rol.getId() == 1 || rol.getId() == 2);
+
+        if (!tieneRolPermitido) {
+            acceso.setAcceso(false);
+            acceso.setToken("");
+            return acceso;
+        }
+
         acceso.setAcceso(true);
         acceso.setIdUsuario(usuario.getId());
 
@@ -106,11 +113,12 @@ public class UsuarioService {
             String token = jwtUtil.generateToken(usuario.getCi());
             acceso.setToken(token);
         } else {
-            acceso.setToken(""); // Usuario correcto pero inactivo
+            acceso.setToken("");
         }
 
         return acceso;
     }
+
 
     public Boolean actualizarPasswordTemporal(int id, String password){
 
