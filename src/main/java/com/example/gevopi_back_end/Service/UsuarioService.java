@@ -1,7 +1,9 @@
 package com.example.gevopi_back_end.Service;
 
+import com.example.gevopi_back_end.Class.Acceso;
 import com.example.gevopi_back_end.Entity.Rol;
 import com.example.gevopi_back_end.Repository.RolRepository;
+import com.example.gevopi_back_end.Security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -12,9 +14,13 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class UsuarioService {
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -72,13 +78,68 @@ public class UsuarioService {
         return true;
     }
 
-    public Usuario login(String ci, String password) {
+    public Acceso login(String ci, String password) {
+
+        Acceso acceso=new Acceso();
         Usuario usuario = usuarioRepository.findByCi(ci)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         if (!usuario.getPassword().equals(password)) {
             throw new RuntimeException("Contraseña incorrecta");
         }
-        return usuario;
+
+        if (usuario.getActivo()) {
+            String token = jwtUtil.generateToken(usuario.getCi());
+            acceso.setToken(token);
+            acceso.setIdUsuario(usuario.getId());
+        }else{
+            acceso.setToken("");
+            acceso.setIdUsuario(usuario.getId());
+        }
+        return acceso;
+    }
+
+    public Boolean actualizarPasswordTemporal(int id, String password){
+
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        usuario.setPassword(password);
+        usuarioRepository.save(usuario);
+        return true;
+    }
+
+    public Boolean activarUsuario(int id) {
+        Usuario user=usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Id no encontrado"));
+        if(user.getPassword().isEmpty() || user.getPassword().isBlank() ){
+
+            String otp = generateOTP();
+
+            user.setPassword(otp);
+            usuarioRepository.save(user);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public Boolean desActivar(int id) {
+        Usuario user=usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Id no encontrado"));
+        if(user.getActivo()){
+            user.setActivo(false);
+            user.setPassword("");
+            usuarioRepository.save(user);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private String generateOTP() {
+        Random random = new Random();
+        return String.format("%05d", random.nextInt(100000));
     }
 }

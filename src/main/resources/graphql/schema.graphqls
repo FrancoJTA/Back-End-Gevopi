@@ -45,6 +45,15 @@ type Mutation {
     nuevoUsuarioGlobal(input: UsuarioInput!): Boolean
     login(ci: String!, password: String!): Usuario
 
+    activarAdmin(id: ID!): Boolean
+    desactivarAdmin(id: ID!): Boolean
+
+    actualizarPassword(id: ID!, password: String!):Boolean
+}
+
+input Acceso {
+    token: String!
+    id: ID!
 }
 
 input UsuarioInput {

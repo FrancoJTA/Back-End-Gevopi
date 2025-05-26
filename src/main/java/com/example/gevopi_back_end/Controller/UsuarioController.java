@@ -1,5 +1,6 @@
 package com.example.gevopi_back_end.Controller;
 
+import com.example.gevopi_back_end.Class.Acceso;
 import com.example.gevopi_back_end.Entity.Usuario;
 import com.example.gevopi_back_end.Service.UsuarioService;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -26,9 +27,23 @@ public class UsuarioController {
         return usuarioService.registrarUsuario(input);
     }
 
-    //arreglar
     @MutationMapping
-    public Usuario login(@Argument String ci, @Argument String password) {
+    public Acceso login(@Argument String ci, @Argument String password) {
         return usuarioService.login(ci, password);
+    }
+
+    @MutationMapping
+    public Boolean actualizarPassword(@Argument int id, @Argument String password) {
+        return usuarioService.actualizarPasswordTemporal(id, password);
+    }
+
+    @MutationMapping
+    public Boolean activarAdmin(@Argument int id){
+        return usuarioService.activarUsuario(id);
+    }
+
+    @MutationMapping
+    public Boolean desactivarAdmin(@Argument int id){
+        return usuarioService.desActivar(id);
     }
 }
