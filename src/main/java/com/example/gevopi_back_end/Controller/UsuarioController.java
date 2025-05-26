@@ -25,7 +25,7 @@ public class UsuarioController {
     }
 
     @MutationMapping
-    public Boolean nuevoUsuarioGlobal(@Argument("input") Usuario input) {
+    public Usuario nuevoUsuarioGlobal(@Argument("input") Usuario input) {
 
         logger.info("Intentando registrar usuario global: {}", input.getEmail());
         return usuarioService.registroGlobal(input);

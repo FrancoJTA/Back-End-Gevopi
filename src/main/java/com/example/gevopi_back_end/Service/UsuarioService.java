@@ -65,7 +65,7 @@ public class UsuarioService {
         return savedUser;
     }
 
-    public Boolean registroGlobal(Usuario usuario) {
+    public Usuario registroGlobal(Usuario usuario) {
         if (usuarioRepository.existsByEmailOrCi(usuario.getEmail(), usuario.getCi())) {
             throw new RuntimeException("El email o CI ya están registrados");
         }
@@ -76,12 +76,9 @@ public class UsuarioService {
                 .orElseThrow(() -> new RuntimeException("Rol con ID 2 no encontrado"));
 
         usuario.setRoles(Collections.singleton(rol));
-        usuarioRepository.save(usuario);
-        System.out.println(usuario);
-        System.out.println("###############################################");
 
+        return usuarioRepository.save(usuario);
 
-        return true;
     }
 
     public Acceso login(String ci, String password) {

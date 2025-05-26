@@ -44,7 +44,9 @@ type Mutation {
     agregarNecesidadesAReporte(reporteId: Int!, necesidadIds: [Int!]!): Boolean
 
     registroUsuario(input: UsuarioInput!): Usuario
-    nuevoUsuarioGlobal(input: UsuarioInput!): Boolean
+
+    nuevoUsuarioGlobal(input: inputUsuarioGlobal!): User
+
     login(ci: String!, password: String!): Acceso
 
     activarAdmin(id: ID!): Boolean
@@ -52,6 +54,24 @@ type Mutation {
 
     actualizarPassword(id: ID!, password: String!):String
 }
+
+input inputUsuarioGlobal {
+    nombre: String
+    apellido: String
+    email: String
+    ci: String
+    telefono: String
+}
+
+type User {
+    id: ID!
+    nombre: String!
+    apellido: String!
+    email: String!
+    ci: String!
+    telefono: String
+}
+
 
 type Acceso {
     token: String!
