@@ -13,8 +13,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -168,5 +170,14 @@ public class UsuarioService {
     private String generateOTP() {
         Random random = new Random();
         return String.format("%05d", random.nextInt(100000));
+    }
+
+    public List<Usuario> obtenerUsuariosConRoles1y2() {
+        List<Usuario> todos = usuarioRepository.findAll();
+
+        return todos.stream()
+                .filter(usuario -> usuario.getRoles().stream()
+                        .anyMatch(rol -> rol.getId() == 1 || rol.getId() == 2))
+                .collect(Collectors.toList());
     }
 }

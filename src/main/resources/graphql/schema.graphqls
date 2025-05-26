@@ -18,6 +18,8 @@ type Query {
 
     preguntasPorTest(testId: Int!): [Pregunta]
 
+    usuariosLista:[Usuario!]
+
 }
 
 type Mutation {
