@@ -53,7 +53,8 @@ type Mutation {
 
 type Acceso {
     token: String!
-    id: ID!
+    id: ID
+    acceso:Boolean!
 }
 
 input UsuarioInput {

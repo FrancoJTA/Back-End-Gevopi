@@ -79,23 +79,36 @@ public class UsuarioService {
     }
 
     public Acceso login(String ci, String password) {
+        Acceso acceso = new Acceso();
 
-        Acceso acceso=new Acceso();
-        Usuario usuario = usuarioRepository.findByCi(ci)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Optional<Usuario> optionalUsuario = usuarioRepository.findByCi(ci);
 
-        if (!usuario.getPassword().equals(password)) {
-            throw new RuntimeException("Contraseña incorrecta");
+        if (optionalUsuario.isEmpty()) {
+            acceso.setAcceso(false);
+            acceso.setToken("");
+            return acceso;
         }
+
+        Usuario usuario = optionalUsuario.get();
+
+        // Validar contraseña
+        if (!usuario.getPassword().equals(password)) {
+            acceso.setAcceso(false);
+            acceso.setToken("");
+            return acceso;
+        }
+
+        // Usuario autenticado correctamente
+        acceso.setAcceso(true);
+        acceso.setIdUsuario(usuario.getId());
 
         if (usuario.getActivo()) {
             String token = jwtUtil.generateToken(usuario.getCi());
             acceso.setToken(token);
-            acceso.setIdUsuario(usuario.getId());
-        }else{
-            acceso.setToken("");
-            acceso.setIdUsuario(usuario.getId());
+        } else {
+            acceso.setToken(""); // Usuario correcto pero inactivo
         }
+
         return acceso;
     }
 
