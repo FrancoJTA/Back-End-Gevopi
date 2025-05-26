@@ -49,7 +49,6 @@ type Mutation {
     desactivarAdmin(id: ID!): Boolean
 
     actualizarPassword(id: ID!, password: String!):String
-
 }
 
 type Acceso {

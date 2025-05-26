@@ -75,6 +75,10 @@ public class UsuarioService {
 
         usuario.setRoles(Collections.singleton(rol));
         usuarioRepository.save(usuario);
+        System.out.println(usuario);
+        System.out.println("###############################################");
+
+
         return true;
     }
 
