@@ -111,8 +111,7 @@ public class UsuarioService {
         }
 
         acceso.setAcceso(true);
-        acceso.setIdUsuario(usuario.getId());
-
+        acceso.setId(usuario.getId());
         if (usuario.getActivo()) {
             String token = jwtUtil.generateToken(usuario.getCi());
             acceso.setToken(token);

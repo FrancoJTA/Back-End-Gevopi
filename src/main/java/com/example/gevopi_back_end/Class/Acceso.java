@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Acceso {
     public String token;
-    public int idUsuario;
+    public int id;
     public boolean acceso;
 }
