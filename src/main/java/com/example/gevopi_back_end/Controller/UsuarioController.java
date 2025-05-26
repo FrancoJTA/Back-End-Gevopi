@@ -10,8 +10,13 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class UsuarioController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
 
     private final UsuarioService usuarioService;
 
@@ -22,7 +27,7 @@ public class UsuarioController {
     @MutationMapping
     public Boolean nuevoUsuarioGlobal(@Argument("input") Usuario input) {
 
-        System.out.println("##################");
+        logger.info("Intentando registrar usuario global: {}", input.getEmail());
         return usuarioService.registroGlobal(input);
     }
 
