@@ -172,12 +172,12 @@ public class UsuarioService {
         return String.format("%05d", random.nextInt(100000));
     }
 
-    public List<Usuario> obtenerUsuariosConRoles1y2() {
+    public List<Usuario> obtenerUsuariosConRoles1() {
         List<Usuario> todos = usuarioRepository.findAll();
 
         return todos.stream()
                 .filter(usuario -> usuario.getRoles().stream()
-                        .anyMatch(rol -> rol.getId() == 1 || rol.getId() == 2))
+                        .anyMatch(rol ->  rol.getId() == 2))
                 .collect(Collectors.toList());
     }
 }

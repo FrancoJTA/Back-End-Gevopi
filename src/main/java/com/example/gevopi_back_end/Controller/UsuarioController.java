@@ -52,6 +52,6 @@ public class UsuarioController {
 
     @QueryMapping
     public List<Usuario> usuariosLista(){
-        return usuarioService.obtenerUsuariosConRoles1y2();
+        return usuarioService.obtenerUsuariosConRoles1();
     }
 }
