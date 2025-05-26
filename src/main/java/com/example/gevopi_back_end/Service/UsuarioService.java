@@ -61,6 +61,13 @@ public class UsuarioService {
         if (usuarioRepository.existsByEmailOrCi(usuario.getEmail(), usuario.getCi())) {
             throw new RuntimeException("El email o CI ya están registrados");
         }
+
+        usuario.setActivo(false);
+
+        Rol rol = rolRepository.findById(2)
+                .orElseThrow(() -> new RuntimeException("Rol con ID 2 no encontrado"));
+
+        usuario.setRoles(Collections.singleton(rol));
         usuarioRepository.save(usuario);
         return true;
     }
