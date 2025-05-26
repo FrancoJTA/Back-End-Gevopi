@@ -127,7 +127,7 @@ public class UsuarioService {
 
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
+        usuario.setActivo(true);
         usuario.setPassword(password);
         usuarioRepository.save(usuario);
         String token = jwtUtil.generateToken(usuario.getCi());
