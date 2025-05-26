@@ -33,7 +33,7 @@ public class UsuarioController {
     }
 
     @MutationMapping
-    public Boolean actualizarPassword(@Argument int id, @Argument String password) {
+    public String  actualizarPassword(@Argument int id, @Argument String password) {
         return usuarioService.actualizarPasswordTemporal(id, password);
     }
 

@@ -48,7 +48,7 @@ type Mutation {
     activarAdmin(id: ID!): Boolean
     desactivarAdmin(id: ID!): Boolean
 
-    actualizarPassword(id: ID!, password: String!):Boolean
+    actualizarPassword(id: ID!, password: String!):String
 }
 
 type Acceso {

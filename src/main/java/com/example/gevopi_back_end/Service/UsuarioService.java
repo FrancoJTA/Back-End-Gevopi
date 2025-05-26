@@ -120,7 +120,7 @@ public class UsuarioService {
     }
 
 
-    public Boolean actualizarPasswordTemporal(int id, String password){
+    public String actualizarPasswordTemporal(int id, String password){
 
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
