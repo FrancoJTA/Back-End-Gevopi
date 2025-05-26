@@ -16,15 +16,15 @@ public class UsuarioController {
     }
 
     @MutationMapping
-    public Usuario nuevoUsuarioGlobal(@Argument("input") Usuario input) {
+    public Boolean nuevoUsuarioGlobal(@Argument("input") Usuario input) {
         return usuarioService.registroGlobal(input);
     }
 
     @MutationMapping
     public Usuario registroUsuario(@Argument("input") Usuario input) {
+
         return usuarioService.registrarUsuario(input);
     }
-
 
     //arreglar
     @MutationMapping
