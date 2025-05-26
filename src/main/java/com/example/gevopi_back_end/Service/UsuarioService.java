@@ -42,7 +42,14 @@ public class UsuarioService {
         return savedUser;
     }
 
-    // Login (validación en texto plano)
+    public Boolean registroGlobal(Usuario usuario) {
+        if (usuarioRepository.existsByEmailOrCi(usuario.getEmail(), usuario.getCi())) {
+            throw new RuntimeException("El email o CI ya están registrados");
+        }
+        usuarioRepository.save(usuario);
+        return true;
+    }
+
     public Usuario login(String ci, String password) {
         Usuario usuario = usuarioRepository.findByCi(ci)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));

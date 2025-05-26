@@ -42,7 +42,7 @@ type Mutation {
     agregarNecesidadesAReporte(reporteId: Int!, necesidadIds: [Int!]!): Boolean
 
     registroUsuario(input: UsuarioInput!): Usuario
-    nuevoUsuarioGlobal(input: UsuarioGlobalInput!): UsuarioGlobal
+    nuevoUsuarioGlobal(input: UsuarioInput!): Boolean
     login(ci: String!, password: String!): Usuario
 
 }
@@ -53,14 +53,7 @@ input UsuarioInput {
     email: String!
     ci: String!
     telefono: String!
-}
-
-input UsuarioGlobalInput {
-    nombre: String!
-    apellido: String!
-    email: String!
-    ci: String!
-    telefono: String!
+    activo: Boolean!
 }
 
 input RespuestaInput {
@@ -88,15 +81,7 @@ type Usuario {
     ci: String!
     telefono: String!
     password:String
-}
-
-type UsuarioGlobal {
-    id: ID!
-    nombre: String!
-    apellido: String!
-    email: String!
-    ci: String!
-    telefono: String!
+    activo: Boolean!
 }
 
 type PreguntasPorTest {

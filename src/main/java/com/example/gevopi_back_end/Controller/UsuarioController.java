@@ -17,7 +17,7 @@ public class UsuarioController {
 
     @MutationMapping
     public Usuario nuevoUsuarioGlobal(@Argument("input") Usuario input) {
-        return usuarioService.registrarUsuario(input);
+        return usuarioService.registroGlobal(input);
     }
 
     @MutationMapping
