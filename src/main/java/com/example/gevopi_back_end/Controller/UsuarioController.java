@@ -21,6 +21,8 @@ public class UsuarioController {
 
     @MutationMapping
     public Boolean nuevoUsuarioGlobal(@Argument("input") Usuario input) {
+
+        System.out.println("##################");
         return usuarioService.registroGlobal(input);
     }
 
