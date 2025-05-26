@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Table(name = "Usuario")
 public class Usuario {
 
@@ -32,6 +32,7 @@ public class Usuario {
     private String telefono;
 
     private String password;
+    private Boolean activo;
 
 
     @ManyToMany
