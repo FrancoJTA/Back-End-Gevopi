@@ -33,6 +33,9 @@ public class UsuarioService {
     @Autowired
     private WebClient webClient;
 
+    @Autowired
+    private EmailService emailService;
+
     private static final String EXTERNAL_API_URL = "http://Global-Api:2020/global_registro/alasA";
 
     public Usuario registrarUsuario(Usuario usuario) {
@@ -141,6 +144,7 @@ public class UsuarioService {
 
             String otp = generateOTP();
 
+            emailService.sendPasswordEmail(user.getEmail(),"Activacion de Cuenta",otp);
             user.setPassword(otp);
             usuarioRepository.save(user);
             return true;
@@ -156,6 +160,7 @@ public class UsuarioService {
         if(user.getActivo()){
             user.setActivo(false);
             user.setPassword("");
+            emailService.sendAccountDeactivationEmail(user.getEmail());
             usuarioRepository.save(user);
             return true;
         }
