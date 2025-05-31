@@ -34,6 +34,10 @@ public class Evaluacion {
     @JoinColumn(name = "ID_Reporte")
     private Reporte reporte;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_Universidad")
+    private Universidad universidad;
+
     @OneToMany(mappedBy = "evaluacion", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("evaluacion") // Previene recursividad en serialización
     private Set<Respuesta> respuestas = new HashSet<>();

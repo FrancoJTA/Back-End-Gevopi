@@ -12,7 +12,6 @@ public class CapacitacionService {
     @Autowired
     private CapacitacionRepository capacitacionRepository;
 
-    // Crear una nueva capacitación
     public Capacitacion crearCapacitacion(String nombre, String descripcion) {
         Capacitacion capacitacion = new Capacitacion();
         capacitacion.setNombre(nombre);
@@ -20,17 +19,14 @@ public class CapacitacionService {
         return capacitacionRepository.save(capacitacion);
     }
 
-    // Obtener todas las capacitaciones
     public List<Capacitacion> obtenerCapacitaciones() {
         return capacitacionRepository.findAll();
     }
 
-    // Obtener una capacitación por id
     public Optional<Capacitacion> obtenerCapacitacionPorId(int id) {
         return capacitacionRepository.findById(id);
     }
 
-    // Editar una capacitación
     public Optional<Capacitacion> editarCapacitacion(int id, String nombre, String descripcion) {
         Optional<Capacitacion> capacitacionOptional = capacitacionRepository.findById(id);
         if (capacitacionOptional.isPresent()) {
@@ -42,7 +38,6 @@ public class CapacitacionService {
         return capacitacionOptional;
     }
 
-    // Eliminar una capacitación
     public boolean eliminarCapacitacion(int id) {
         if (capacitacionRepository.existsById(id)) {
             capacitacionRepository.deleteById(id);

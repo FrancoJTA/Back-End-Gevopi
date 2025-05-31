@@ -20,9 +20,15 @@ type Query {
 
     usuariosLista:[Usuario!]
 
+    obtnenerUniversidades:[Universidad!]
+
 }
 
 type Mutation {
+
+    agregarUniversidad(input: UniversidadInput):Universidad
+    actualizarUniversidad(input: UniversidadInput):Universidad
+    eliminarUniversidad(id: ID!): Boolean
 
     actualizarPregunta(id: ID!, texto: String!): Pregunta
     agregarPregunta(testId: ID!, texto: String!, tipo: String!): Pregunta
@@ -53,6 +59,11 @@ type Mutation {
     desactivarAdmin(id: ID!): Boolean
 
     actualizarPassword(id: ID!, password: String!):String
+
+    agregarUniversidadEvaluacion(idEvaluacion: ID!, idUniversidad: ID!): Evaluacion
+    quitarEvaluacionUniversidad(id: ID!): Evaluacion
+
+
 }
 
 input inputUsuarioGlobal {
@@ -104,6 +115,19 @@ input ReporteEvaluacionInput {
     evaluaciones: [EvaluacionRespuestaInput!]!
 }
 
+input UniversidadInput{
+    id: ID
+    nombre: String
+    direccion: String
+}
+
+type Universidad{
+    id: ID
+    nombre: String
+    direccion: String
+    evaluaciones: [Evaluacion]
+}
+
 type Usuario {
     id: ID!
     nombre: String!
@@ -152,6 +176,7 @@ type Evaluacion {
     test: Test!
     fecha: String!
     respuestas: [Respuesta!]
+    universidad: Universidad
 }
 
 type Test {
