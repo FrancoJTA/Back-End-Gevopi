@@ -137,7 +137,7 @@ public class UsuarioService {
     public Boolean activarUsuario(int id) {
         Usuario user=usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Id no encontrado"));
-        if(user.getPassword().isEmpty() || user.getPassword().isBlank() ){
+        if(user.getPassword() == null || user.getPassword().isEmpty() || user.getPassword().isBlank() ){
 
             String otp = generateOTP();
 
