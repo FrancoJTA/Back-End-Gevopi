@@ -148,8 +148,22 @@ type Dashboard{
     reportes:[Reporte!]
     report_cantidad: Int!
     eva_cantidad:Int!
+    capacitacion: [DashCapacitacion!]
+    necesidad: [DashNecesidades!]
+    universidad: [DashUniversidades!]
 }
-
+type DashCapacitacion{
+    nombre:String!
+    cantidad:Int!
+}
+type DashNecesidades{
+    nombre:String!
+    cantidad:Int!
+}
+type DashUniversidades{
+    nombre:String!
+    cantidad:Int!
+}
 type HistorialClinico {
     id: ID!
     fechaInicio: String!
