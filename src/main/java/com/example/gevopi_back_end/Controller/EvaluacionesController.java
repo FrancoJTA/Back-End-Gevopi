@@ -29,4 +29,9 @@ public class EvaluacionesController {
     public Evaluacion agregarUniversidadEvaluacion(@Argument int idEvaluacion,@Argument int idUniversidad){
         return evaluacionService.agregarUniversidadEvaluacion(idEvaluacion, idUniversidad);
     }
+
+    @MutationMapping
+    public Evaluacion quitarEvaluacionUniversidad(@Argument int id){
+            return evaluacionService.quitarEvaluacionUniversidad(id);
+    }
 }

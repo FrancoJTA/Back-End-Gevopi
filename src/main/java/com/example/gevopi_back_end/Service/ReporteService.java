@@ -223,4 +223,7 @@ public class ReporteService {
         return true;
     }
 
+    public List<Reporte> obtenerTodosReportes() {
+        return reporteRepository.findAll();
+    }
 }

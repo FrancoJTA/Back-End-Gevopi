@@ -62,4 +62,8 @@ public class EvaluacionService {
         }
         return null;
     }
+
+    public List<Evaluacion> obtenerTodasEvaluaciones() {
+        return evaluacionRepository.findAll();
+    }
 }
