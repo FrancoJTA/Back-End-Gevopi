@@ -36,57 +36,42 @@ public class DashboardController {
 
         long cantidadEvaluacionesCompletas = evaluacionService.evaluacionesCompletas();
 
-        // Obtener todas las evaluaciones para universidades
-        List<Evaluacion> evaluaciones = evaluacionService.obtenerTodasEvaluaciones();
-
         // --- UNIVERSIDADES con cantidad de evaluaciones relacionadas ---
         List<Universidad> universidades = universidadService.obtenerUniversidades();
+
         List<Dashboard.DashUniversidades> dashUniversidades = universidades.stream()
                 .map(universidad -> {
-                    long count = evaluaciones.stream()
-                            .filter(e -> e.getUniversidad() != null &&
-                                    Objects.equals(e.getUniversidad().getId(), universidad.getId()))
-                            .count();
+                    int count = universidad.getEvaluaciones() != null ? universidad.getEvaluaciones().size() : 0;
                     Dashboard.DashUniversidades du = new Dashboard.DashUniversidades();
                     du.setNombre(universidad.getNombre());
-                    du.setCantidad((int) count);
+                    du.setCantidad(count);
                     return du;
                 }).collect(Collectors.toList());
 
-        // Obtener todos los reportes para capacitaciones y necesidades
-        List<Reporte> reportes = reporteService.obtenerTodosReportes();
-
         // --- CAPACITACIONES con cantidad de reportes relacionadas ---
         List<Capacitacion> capacitaciones = capacitacionService.obtenerCapacitaciones();
+
         List<Dashboard.DashCapacitacion> dashCapacitaciones = capacitaciones.stream()
                 .map(capacitacion -> {
-                    long count = reportes.stream()
-                            .filter(r -> r.getCapacitaciones() != null &&
-                                    r.getCapacitaciones().stream()
-                                            .anyMatch(c -> Objects.equals(capacitacion.getId(), c.getId())))
-                            .count();
+                    int count = capacitacion.getReportes() != null ? capacitacion.getReportes().size() : 0;
                     Dashboard.DashCapacitacion dc = new Dashboard.DashCapacitacion();
                     dc.setNombre(capacitacion.getNombre());
-                    dc.setCantidad((int) count);
+                    dc.setCantidad(count);
                     return dc;
                 }).collect(Collectors.toList());
 
         // --- NECESIDADES con cantidad de reportes relacionadas ---
         List<Necesidad> necesidades = necesidadService.obtenerNecesidades();
+
         List<Dashboard.DashNecesidades> dashNecesidades = necesidades.stream()
                 .map(necesidad -> {
-                    long count = reportes.stream()
-                            .filter(r -> r.getNecesidades() != null &&
-                                    r.getNecesidades().stream()
-                                            .anyMatch(n -> n.getId().equals(necesidad.getId())))
-                            .count();
+                    int count = necesidad.getReportes() != null ? necesidad.getReportes().size() : 0;
                     Dashboard.DashNecesidades dn = new Dashboard.DashNecesidades();
                     dn.setNombre(necesidad.getTipo());
-                    dn.setCantidad((int) count);
+                    dn.setCantidad(count);
                     return dn;
                 }).collect(Collectors.toList());
 
-        // Armar el dashboard final
         Dashboard dashboard = new Dashboard();
         dashboard.setReportes(reportesUltimos3);
         dashboard.setReport_cantidad((int) cantidadReportesUltimas24Horas);
