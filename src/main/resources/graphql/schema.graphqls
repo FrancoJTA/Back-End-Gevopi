@@ -125,6 +125,7 @@ type Universidad{
     id: ID
     nombre: String
     direccion: String
+    telefono: String
     evaluaciones: [Evaluacion]
 }
 
