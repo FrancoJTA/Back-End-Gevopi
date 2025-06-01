@@ -119,6 +119,7 @@ input UniversidadInput{
     id: ID
     nombre: String
     direccion: String
+    telefono: String
 }
 
 type Universidad{
