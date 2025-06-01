@@ -34,6 +34,8 @@ public class ReporteService {
     private NecesidadRepository necesidadRepository;
     @Autowired
     private WebClient webClient;
+    @Autowired
+    private EmailService emailService;
 
     public long countReportesUltimas24Horas() {
         LocalDateTime fechaLimite = LocalDateTime.now().minusDays(1);
@@ -65,17 +67,15 @@ public class ReporteService {
         if (ultimoReporteOpt.isPresent()) {
             Reporte ultimoReporte = ultimoReporteOpt.get();
 
-            // Comprobar si tiene datos en el campo observaciones
             if (ultimoReporte.getObservaciones() != null && !ultimoReporte.getObservaciones().isEmpty()) {
-                // Si tiene observaciones, crear un nuevo reporte
-                Reporte nuevoReporte = new Reporte();
-                nuevoReporte.setHistorialClinico(ultimoReporte.getHistorialClinico());  // Usar el mismo HistorialClinico
-                nuevoReporte.setFechaGenerado(LocalDateTime.now());  // Establecer la fecha de generación como la fecha actual
 
-                // Guardar el nuevo reporte
+                Reporte nuevoReporte = new Reporte();
+                nuevoReporte.setHistorialClinico(ultimoReporte.getHistorialClinico());
+                nuevoReporte.setFechaGenerado(LocalDateTime.now());
+                HistorialClinico historial = nuevoReporte.getHistorialClinico();
+
                 reporteRepository.save(nuevoReporte);
 
-                // Obtener los Test con ID 1 y ID 2 desde la base de datos
                 Optional<Test> test1Opt = testRepository.findById(3);
                 Optional<Test> test2Opt = testRepository.findById(4);
 
@@ -83,27 +83,28 @@ public class ReporteService {
                     Test test1 = test1Opt.get();
                     Test test2 = test2Opt.get();
 
-                    // Crear y asociar las evaluaciones al nuevo reporte con los Test correspondientes
                     Evaluacion evaluacion1 = new Evaluacion();
-                    evaluacion1.setReporte(nuevoReporte);  // Asociar al nuevo reporte
-                    evaluacion1.setTest(test1);  // Asociar el Test con ID 1
-                    evaluacion1.setFecha(LocalDateTime.now());  // Establecer la fecha de la evaluación
+                    evaluacion1.setReporte(nuevoReporte);
+                    evaluacion1.setTest(test1);
+                    evaluacion1.setFecha(LocalDateTime.now());
 
                     Evaluacion evaluacion2 = new Evaluacion();
-                    evaluacion2.setReporte(nuevoReporte);  // Asociar al nuevo reporte
-                    evaluacion2.setTest(test2);  // Asociar el Test con ID 2
-                    evaluacion2.setFecha(LocalDateTime.now());  // Establecer la fecha de la evaluación
+                    evaluacion2.setReporte(nuevoReporte);
+                    evaluacion2.setTest(test2);
+                    evaluacion2.setFecha(LocalDateTime.now());
 
-                    // Guardar las evaluaciones en la base de datos
                     evaluacionRepository.save(evaluacion1);
                     evaluacionRepository.save(evaluacion2);
+
+                    String url = "http://localhost:3000/FormularioVoluntario/"+nuevoReporte.getId()+"/"+evaluacion1.getId()+"/"+evaluacion2.getId();
+                    emailService.sendFormularioEmail(historial.getEmail(),"Formulario Medico",url);
+
                 }
 
-                return true;  // Se creó un nuevo reporte y sus evaluaciones
+                return true;
             }
         }
 
-        // Si no se crea el reporte, retornamos false
         return false;
     }
 

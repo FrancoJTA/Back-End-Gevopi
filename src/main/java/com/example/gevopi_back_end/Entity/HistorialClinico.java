@@ -27,4 +27,7 @@ public class HistorialClinico {
     @OneToMany(mappedBy = "historialClinico", fetch = FetchType.LAZY)
     @JsonIgnoreProperties("historialClinico")
     private Set<Reporte> reportes = new HashSet<>();
+
+    private String email;
+
 }
