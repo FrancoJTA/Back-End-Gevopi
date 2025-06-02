@@ -241,7 +241,7 @@ public class ReporteService {
         Optional<Reporte> reporteOpt = reporteRepository.findById(reporteId);
         if (!reporteOpt.isEmpty()){
             Reporte reporte = reporteOpt.get();
-            if(reporte.getObservaciones() == null && reporte.getObservaciones().isEmpty()){
+            if(reporte.getObservaciones() == null || reporte.getObservaciones().isEmpty()){
                 return true;
             }
         }
