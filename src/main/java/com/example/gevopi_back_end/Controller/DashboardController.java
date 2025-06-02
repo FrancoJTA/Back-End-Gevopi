@@ -31,14 +31,9 @@ public class DashboardController {
     @QueryMapping
     public Dashboard obtenerDashboard() {
         List<Reporte> reportesUltimos3 = reporteService.obtenerUltimos3Reportes();
-
         long cantidadReportesUltimas24Horas = reporteService.countReportesUltimas24Horas();
-
         long cantidadEvaluacionesCompletas = evaluacionService.evaluacionesCompletas();
-
-        // --- UNIVERSIDADES con cantidad de evaluaciones relacionadas ---
         List<Universidad> universidades = universidadService.obtenerUniversidades();
-
         List<Dashboard.DashUniversidades> dashUniversidades = universidades.stream()
                 .map(universidad -> {
                     int count = universidad.getEvaluaciones() != null ? universidad.getEvaluaciones().size() : 0;
@@ -48,9 +43,8 @@ public class DashboardController {
                     return du;
                 }).collect(Collectors.toList());
 
-        // --- CAPACITACIONES con cantidad de reportes relacionadas ---
-        List<Capacitacion> capacitaciones = capacitacionService.obtenerCapacitaciones();
 
+        List<Capacitacion> capacitaciones = capacitacionService.obtenerCapacitaciones();
         List<Dashboard.DashCapacitacion> dashCapacitaciones = capacitaciones.stream()
                 .map(capacitacion -> {
                     int count = capacitacion.getReportes() != null ? capacitacion.getReportes().size() : 0;
@@ -60,9 +54,7 @@ public class DashboardController {
                     return dc;
                 }).collect(Collectors.toList());
 
-        // --- NECESIDADES con cantidad de reportes relacionadas ---
         List<Necesidad> necesidades = necesidadService.obtenerNecesidades();
-
         List<Dashboard.DashNecesidades> dashNecesidades = necesidades.stream()
                 .map(necesidad -> {
                     int count = necesidad.getReportes() != null ? necesidad.getReportes().size() : 0;
@@ -79,8 +71,6 @@ public class DashboardController {
         dashboard.setCapacitacion(dashCapacitaciones);
         dashboard.setNecesidad(dashNecesidades);
         dashboard.setUniversidad(dashUniversidades);
-
         return dashboard;
     }
-
 }
