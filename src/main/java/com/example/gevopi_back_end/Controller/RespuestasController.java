@@ -6,6 +6,7 @@ import com.example.gevopi_back_end.Service.ReporteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 import java.util.*;
@@ -18,6 +19,11 @@ public class RespuestasController {
 
     @Autowired
     private EvaluacionService evaluacionService;
+
+    @QueryMapping
+    public Boolean estadoEvaluacion(@Argument int id){
+        return reporteService.estadoEvaluacion(id);
+    }
 
     @MutationMapping
     public Boolean crearEvaluacion(@Argument int id) {

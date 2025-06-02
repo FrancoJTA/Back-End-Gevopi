@@ -22,6 +22,8 @@ type Query {
 
     obtnenerUniversidades:[Universidad!]
 
+    estadoEvaluacion(id: Int!):Boolean
+
 }
 
 type Mutation {

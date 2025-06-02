@@ -66,20 +66,16 @@ public class ReporteService {
 
         Optional<Reporte> ultimoReporteOpt = reporteRepository.findTopByHistorialClinicoIdOrderByFechaGeneradoDesc(historialId);
 
-        // Variable para guardar el historial clinico para el nuevo reporte
         HistorialClinico historial = null;
 
         if (ultimoReporteOpt.isPresent()) {
             Reporte ultimoReporte = ultimoReporteOpt.get();
             historial = ultimoReporte.getHistorialClinico();
 
-            // Solo crear si hay observaciones
             if (ultimoReporte.getObservaciones() == null || ultimoReporte.getObservaciones().isEmpty()) {
                 return false;  // No se crea reporte si no hay observaciones
             }
         } else {
-            // Si no existe reporte previo, necesitamos obtener el historial clinico de alguna forma
-            // Suponiendo que tienes un repositorio para HistorialClinico:
             Optional<HistorialClinico> historialOpt = historialClinicoRepository.findById(historialId);
             if (historialOpt.isEmpty()) {
                 return false; // No existe historial clinico, no se puede crear reporte
@@ -239,5 +235,16 @@ public class ReporteService {
 
     public List<Reporte> obtenerTodosReportes() {
         return reporteRepository.findAll();
+    }
+
+    public Boolean estadoEvaluacion(Integer reporteId) {
+        Optional<Reporte> reporteOpt = reporteRepository.findById(reporteId);
+        if (!reporteOpt.isEmpty()){
+            Reporte reporte = reporteOpt.get();
+            if(reporte.getObservaciones() == null && reporte.getObservaciones().isEmpty()){
+                return true;
+            }
+        }
+        return false;
     }
 }
