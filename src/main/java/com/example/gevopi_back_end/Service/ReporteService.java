@@ -36,6 +36,8 @@ public class ReporteService {
     private WebClient webClient;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private HistorialClinicoRepository historialClinicoRepository;
 
     public long countReportesUltimas24Horas() {
         LocalDateTime fechaLimite = LocalDateTime.now().minusDays(1);
@@ -64,46 +66,59 @@ public class ReporteService {
 
         Optional<Reporte> ultimoReporteOpt = reporteRepository.findTopByHistorialClinicoIdOrderByFechaGeneradoDesc(historialId);
 
+        // Variable para guardar el historial clinico para el nuevo reporte
+        HistorialClinico historial = null;
 
-        Reporte ultimoReporte = ultimoReporteOpt.get();
+        if (ultimoReporteOpt.isPresent()) {
+            Reporte ultimoReporte = ultimoReporteOpt.get();
+            historial = ultimoReporte.getHistorialClinico();
 
-        if (ultimoReporte.getObservaciones() != null && !ultimoReporte.getObservaciones().isEmpty()) {
-
-            Reporte nuevoReporte = new Reporte();
-            nuevoReporte.setHistorialClinico(ultimoReporte.getHistorialClinico());
-            nuevoReporte.setFechaGenerado(LocalDateTime.now());
-            HistorialClinico historial = nuevoReporte.getHistorialClinico();
-
-            reporteRepository.save(nuevoReporte);
-
-            Optional<Test> test1Opt = testRepository.findById(3);
-            Optional<Test> test2Opt = testRepository.findById(4);
-
-            if (test1Opt.isPresent() && test2Opt.isPresent()) {
-                Test test1 = test1Opt.get();
-                Test test2 = test2Opt.get();
-
-                Evaluacion evaluacion1 = new Evaluacion();
-                evaluacion1.setReporte(nuevoReporte);
-                evaluacion1.setTest(test1);
-                evaluacion1.setFecha(LocalDateTime.now());
-
-                Evaluacion evaluacion2 = new Evaluacion();
-                evaluacion2.setReporte(nuevoReporte);
-                evaluacion2.setTest(test2);
-                evaluacion2.setFecha(LocalDateTime.now());
-
-                evaluacionRepository.save(evaluacion1);
-                evaluacionRepository.save(evaluacion2);
-
-                String url = "http://localhost:3000/FormularioVoluntario/"+nuevoReporte.getId()+"/"+evaluacion1.getId()+"/"+evaluacion2.getId();
-                emailService.sendFormularioEmail(historial.getEmail(),"Formulario Medico",url);
-
+            // Solo crear si hay observaciones
+            if (ultimoReporte.getObservaciones() == null || ultimoReporte.getObservaciones().isEmpty()) {
+                return false;  // No se crea reporte si no hay observaciones
             }
-
-            return true;
+        } else {
+            // Si no existe reporte previo, necesitamos obtener el historial clinico de alguna forma
+            // Suponiendo que tienes un repositorio para HistorialClinico:
+            Optional<HistorialClinico> historialOpt = historialClinicoRepository.findById(historialId);
+            if (historialOpt.isEmpty()) {
+                return false; // No existe historial clinico, no se puede crear reporte
+            }
+            historial = historialOpt.get();
         }
-        return false;
+
+        // Crear el nuevo reporte
+        Reporte nuevoReporte = new Reporte();
+        nuevoReporte.setHistorialClinico(historial);
+        nuevoReporte.setFechaGenerado(LocalDateTime.now());
+
+        reporteRepository.save(nuevoReporte);
+
+        Optional<Test> test1Opt = testRepository.findById(3);
+        Optional<Test> test2Opt = testRepository.findById(4);
+
+        if (test1Opt.isPresent() && test2Opt.isPresent()) {
+            Test test1 = test1Opt.get();
+            Test test2 = test2Opt.get();
+
+            Evaluacion evaluacion1 = new Evaluacion();
+            evaluacion1.setReporte(nuevoReporte);
+            evaluacion1.setTest(test1);
+            evaluacion1.setFecha(LocalDateTime.now());
+
+            Evaluacion evaluacion2 = new Evaluacion();
+            evaluacion2.setReporte(nuevoReporte);
+            evaluacion2.setTest(test2);
+            evaluacion2.setFecha(LocalDateTime.now());
+
+            evaluacionRepository.save(evaluacion1);
+            evaluacionRepository.save(evaluacion2);
+
+            String url = "http://localhost:3000/FormularioVoluntario/"+nuevoReporte.getId()+"/"+evaluacion1.getId()+"/"+evaluacion2.getId();
+            emailService.sendFormularioEmail(historial.getEmail(),"Formulario Medico",url);
+        }
+
+        return true;
     }
 
     private String construirTextoEvaluacion(List<Map<String, Object>> respuestas) {
