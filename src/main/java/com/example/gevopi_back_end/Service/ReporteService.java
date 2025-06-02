@@ -64,47 +64,45 @@ public class ReporteService {
 
         Optional<Reporte> ultimoReporteOpt = reporteRepository.findTopByHistorialClinicoIdOrderByFechaGeneradoDesc(historialId);
 
-        if (ultimoReporteOpt.isPresent()) {
-            Reporte ultimoReporte = ultimoReporteOpt.get();
 
-            if (ultimoReporte.getObservaciones() != null && !ultimoReporte.getObservaciones().isEmpty()) {
+        Reporte ultimoReporte = ultimoReporteOpt.get();
 
-                Reporte nuevoReporte = new Reporte();
-                nuevoReporte.setHistorialClinico(ultimoReporte.getHistorialClinico());
-                nuevoReporte.setFechaGenerado(LocalDateTime.now());
-                HistorialClinico historial = nuevoReporte.getHistorialClinico();
+        if (ultimoReporte.getObservaciones() != null && !ultimoReporte.getObservaciones().isEmpty()) {
 
-                reporteRepository.save(nuevoReporte);
+            Reporte nuevoReporte = new Reporte();
+            nuevoReporte.setHistorialClinico(ultimoReporte.getHistorialClinico());
+            nuevoReporte.setFechaGenerado(LocalDateTime.now());
+            HistorialClinico historial = nuevoReporte.getHistorialClinico();
 
-                Optional<Test> test1Opt = testRepository.findById(3);
-                Optional<Test> test2Opt = testRepository.findById(4);
+            reporteRepository.save(nuevoReporte);
 
-                if (test1Opt.isPresent() && test2Opt.isPresent()) {
-                    Test test1 = test1Opt.get();
-                    Test test2 = test2Opt.get();
+            Optional<Test> test1Opt = testRepository.findById(3);
+            Optional<Test> test2Opt = testRepository.findById(4);
 
-                    Evaluacion evaluacion1 = new Evaluacion();
-                    evaluacion1.setReporte(nuevoReporte);
-                    evaluacion1.setTest(test1);
-                    evaluacion1.setFecha(LocalDateTime.now());
+            if (test1Opt.isPresent() && test2Opt.isPresent()) {
+                Test test1 = test1Opt.get();
+                Test test2 = test2Opt.get();
 
-                    Evaluacion evaluacion2 = new Evaluacion();
-                    evaluacion2.setReporte(nuevoReporte);
-                    evaluacion2.setTest(test2);
-                    evaluacion2.setFecha(LocalDateTime.now());
+                Evaluacion evaluacion1 = new Evaluacion();
+                evaluacion1.setReporte(nuevoReporte);
+                evaluacion1.setTest(test1);
+                evaluacion1.setFecha(LocalDateTime.now());
 
-                    evaluacionRepository.save(evaluacion1);
-                    evaluacionRepository.save(evaluacion2);
+                Evaluacion evaluacion2 = new Evaluacion();
+                evaluacion2.setReporte(nuevoReporte);
+                evaluacion2.setTest(test2);
+                evaluacion2.setFecha(LocalDateTime.now());
 
-                    String url = "http://localhost:3000/FormularioVoluntario/"+nuevoReporte.getId()+"/"+evaluacion1.getId()+"/"+evaluacion2.getId();
-                    emailService.sendFormularioEmail(historial.getEmail(),"Formulario Medico",url);
+                evaluacionRepository.save(evaluacion1);
+                evaluacionRepository.save(evaluacion2);
 
-                }
+                String url = "http://localhost:3000/FormularioVoluntario/"+nuevoReporte.getId()+"/"+evaluacion1.getId()+"/"+evaluacion2.getId();
+                emailService.sendFormularioEmail(historial.getEmail(),"Formulario Medico",url);
 
-                return true;
             }
-        }
 
+            return true;
+        }
         return false;
     }
 
