@@ -118,8 +118,8 @@ input EvaluacionRespuestaPruebaInput {
     respuestas: [RespuestaInput!]!
 }
 type RespuestaPrueba{
-    resumenFisico: String!
-    resumentEmocional: String!
+    respuestaFisico: String!
+    respuestaEmocional: String!
 }
 
 input PruebaEvaluacionInput {

@@ -163,17 +163,14 @@ public class ReporteService {
         RespuestasPrueba respuestasPrueba = new RespuestasPrueba();
 
         for (Map<String, Object> evaluacionMap : evaluaciones) {
-            System.out.println(evaluacionMap);
             Integer testId = (Integer) evaluacionMap.get("testId");
             List<Map<String, Object>> respuestas = (List<Map<String, Object>>) evaluacionMap.get("respuestas");
             int tipo = testId;
             String textoEvaluacion = construirTextoEvaluacion(respuestas);
             String respuestaApi = enviarEvaluacionAlApi(textoEvaluacion, tipo);
             if (tipo == 3) {
-                System.out.println("hola");
                 respuestasPrueba.setRespuestaFisico(respuestaApi);
             } else if (tipo == 4) {
-                System.out.println("chau");
                 respuestasPrueba.setRespuestaEmocional(respuestaApi);
             }
         }
