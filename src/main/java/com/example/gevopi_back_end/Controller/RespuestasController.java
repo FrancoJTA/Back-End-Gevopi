@@ -1,5 +1,6 @@
 package com.example.gevopi_back_end.Controller;
 
+import com.example.gevopi_back_end.Class.RespuestasPrueba;
 import com.example.gevopi_back_end.Entity.Reporte;
 import com.example.gevopi_back_end.Service.EvaluacionService;
 import com.example.gevopi_back_end.Service.ReporteService;
@@ -33,6 +34,11 @@ public class RespuestasController {
     @MutationMapping
     public Boolean enviarRespuestas(@Argument("input") Map<String, Object> input) {
         return reporteService.enviarRespuestas(input);
+    }
+
+    @MutationMapping
+    public RespuestasPrueba enviarRespuestasPrueba(@Argument("input") Map<String, Object> input) {
+        return reporteService.enviarRespuestasPrueba(input);
     }
 
 }

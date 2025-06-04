@@ -1,5 +1,6 @@
 package com.example.gevopi_back_end.Service;
 
+import com.example.gevopi_back_end.Class.RespuestasPrueba;
 import com.example.gevopi_back_end.Entity.*;
 import com.example.gevopi_back_end.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +125,7 @@ public class ReporteService {
     }
 
     private String enviarEvaluacionAlApi(String textoEvaluacion, int tipo) {
-        String endpoint = tipo == 1 ? "/generar_fisico" : "/generar_emocion";
+        String endpoint = tipo == 3 ? "/generar_fisico" : "/generar_emocion";
         Map<String, Object> body = Map.of("evaluacion", textoEvaluacion);
 
         return WebClient.create("http://ia-python-api:5000")
@@ -155,6 +156,30 @@ public class ReporteService {
             respuestaRepository.save(respuesta);
         }
     }
+    public RespuestasPrueba enviarRespuestasPrueba(Map<String, Object> input) {
+
+        List<Map<String, Object>> evaluaciones = (List<Map<String, Object>>) input.get("evaluaciones");
+
+        RespuestasPrueba respuestasPrueba = new RespuestasPrueba();
+
+        for (Map<String, Object> evaluacionMap : evaluaciones) {
+            Integer testId = (Integer) evaluacionMap.get("testId");
+            List<Map<String, Object>> respuestas = (List<Map<String, Object>>) evaluacionMap.get("respuestas");
+            int tipo = testId;
+            String textoEvaluacion = construirTextoEvaluacion(respuestas);
+            String respuestaApi = enviarEvaluacionAlApi(textoEvaluacion, tipo);
+            if (tipo == 3) {
+                respuestasPrueba.setRespuestaFisico(respuestaApi);
+            } else if (tipo == 4) {
+                respuestasPrueba.setRespuestaEmocional(respuestaApi);
+            }
+        }
+
+        return respuestasPrueba;
+    }
+
+
+
     public Boolean enviarRespuestas(Map<String, Object> input) {
 
         Integer reporteId = (Integer) input.get("reporteId");

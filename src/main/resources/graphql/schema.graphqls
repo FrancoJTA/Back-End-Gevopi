@@ -47,6 +47,7 @@ type Mutation {
     crearEvaluacion(id: ID!): Boolean
 
     enviarRespuestas(input: ReporteEvaluacionInput!): Boolean!
+    enviarRespuestasPrueba(input: PruebaEvaluacionInput!): RespuestaPrueba!
 
     agregarCapacitacionesAReporte(reporteId: Int!, capacitacionIds: [Int!]!): Boolean
     agregarNecesidadesAReporte(reporteId: Int!, necesidadIds: [Int!]!): Boolean
@@ -109,6 +110,20 @@ input RespuestaInput {
 input EvaluacionRespuestaInput {
     evaluacionId: Int!
     respuestas: [RespuestaInput!]!
+}
+
+
+input EvaluacionRespuestaPruebaInput {
+    testId: Int!
+    respuestas: [RespuestaInput!]!
+}
+type RespuestaPrueba{
+    resumenFisico: String!
+    resumentEmocional: String!
+}
+
+input PruebaEvaluacionInput {
+    evaluaciones: [EvaluacionRespuestaPruebaInput!]!
 }
 
 input ReporteEvaluacionInput {
