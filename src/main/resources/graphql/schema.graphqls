@@ -36,7 +36,7 @@ type Mutation {
     agregarPregunta(testId: ID!, texto: String!, tipo: String!): Pregunta
     eliminarPregunta(id: ID!): Boolean
 
-    crearCapacitacion(nombre: String!, descripcion: String!): Capacitacion
+    crearCapacitacion(input: inputAgregarCapacitacion): Capacitacion
     editarCapacitacion(id: ID!, nombre: String, descripcion: String): Capacitacion
     eliminarCapacitacion(id: ID!): Boolean
 
