@@ -24,6 +24,7 @@ type Query {
 
     estadoEvaluacion(id: Int!):Boolean
 
+    obtenerCursosVoluntario(id: ID!):[CursoProgreso]
 }
 
 type Mutation {
@@ -65,6 +66,7 @@ type Mutation {
 
     agregarUniversidadEvaluacion(idEvaluacion: ID!, idUniversidad: ID!): Evaluacion
     quitarEvaluacionUniversidad(id: ID!): Evaluacion
+
 
 
 }
@@ -276,7 +278,6 @@ type Etapas{
     nombre:String!
     orden:Int!
     curso:Cursos
-    progressoVoluntario: [ProgresoVoluntario]
 }
 
 type ProgresoVoluntario {
@@ -286,4 +287,19 @@ type ProgresoVoluntario {
     etapa:Etapas
     fechaInicio: String!
     fechaFechaFinalizacion: String!
+}
+
+type EtapaProgreso{
+    id:ID!
+    nombre:String
+    orden:Int
+    estado:String
+    fechaInicio:String
+    fechaFinalizacion:String
+}
+
+type CursoProgreso{
+    id:ID!
+    nombre:String
+    etapas:[EtapaProgreso]
 }

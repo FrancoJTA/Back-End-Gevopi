@@ -31,5 +31,5 @@ public class Etapas {
 
     @OneToMany(mappedBy = "etapa", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("etapa")
-    private Set<ProgresoVoluntario> progressoVoluntario=new HashSet<>();
+    private Set<ProgresoVoluntario> progresoVoluntario=new HashSet<>();
 }
