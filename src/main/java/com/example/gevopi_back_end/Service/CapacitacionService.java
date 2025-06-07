@@ -6,6 +6,7 @@ import com.example.gevopi_back_end.Entity.Cursos;
 import com.example.gevopi_back_end.Entity.Etapas;
 import com.example.gevopi_back_end.Repository.CapacitacionRepository;
 import com.example.gevopi_back_end.Repository.CursosRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,26 +20,29 @@ public class CapacitacionService {
     @Autowired
     private CursosRepository cursoRepository;
 
+    @Transactional
     public Capacitacion crearCapacitacion(inputCapacitacion input) {
         // Crear la entidad de Capacitacion
         Capacitacion capacitacion = new Capacitacion();
         capacitacion.setNombre(input.getNombre());
         capacitacion.setDescripcion(input.getDescripcion());
 
-        // Si la lista de cursos no está vacía, crear y asociar los cursos
+        capacitacion = capacitacionRepository.save(capacitacion);
+
         if (input.getCursos() != null && !input.getCursos().isEmpty()) {
             for (inputCapacitacion.inputCurso inputCurso : input.getCursos()) {
                 Cursos curso = new Cursos();
                 curso.setNombre(inputCurso.getNombre());
-                curso.setCapacitacion(capacitacion); // Asociar el curso a la capacitación
+                curso.setCapacitacion(capacitacion);
 
-                // Si se incluyen etapas, crear y asociar las etapas al curso
+                curso.setEtapas(new HashSet<>());
+
                 if (inputCurso.getEtapas() != null && !inputCurso.getEtapas().isEmpty()) {
                     for (inputCapacitacion.inputCurso.inputEtapaCcapacitacion inputEtapa : inputCurso.getEtapas()) {
                         Etapas etapa = new Etapas();
                         etapa.setNombre(inputEtapa.getNombre());
                         etapa.setOrden(inputEtapa.getOrden());
-                        etapa.setCurso(curso); // Asociar la etapa al curso
+                        etapa.setCurso(curso);
                         curso.getEtapas().add(etapa);
                     }
                 }
