@@ -37,7 +37,7 @@ type Mutation {
     eliminarPregunta(id: ID!): Boolean
 
     crearCapacitacion(input: inputAgregarCapacitacion): Capacitacion
-    editarCapacitacion(id: ID!, nombre: String, descripcion: String): Capacitacion
+    editarCapacitacion(input: inputAgregarCapacitacion): Capacitacion
     eliminarCapacitacion(id: ID!): Boolean
 
     crearNecesidad(tipo: String!, descripcion: String!): Necesidad
@@ -78,14 +78,17 @@ input inputUsuarioGlobal {
 }
 
 input inputCurso{
+    id:ID
     nombre:String
     etapas:[inputEtapasCapacitacion]
 }
 input inputEtapasCapacitacion{
+    id:ID
     nombre:String
     orden:Int
 }
 input inputAgregarCapacitacion{
+    id:ID
     nombre:String!
     descripcion:String!
     cursos: [inputCurso]

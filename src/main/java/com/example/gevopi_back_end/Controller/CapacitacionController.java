@@ -27,8 +27,8 @@ public class CapacitacionController {
     }
 
     @MutationMapping
-    public Optional<Capacitacion> editarCapacitacion(@Argument int id,@Argument String nombre,@Argument String descripcion) {
-        return capacitacionService.editarCapacitacion(id, nombre, descripcion);
+    public Capacitacion editarCapacitacion(@Argument("input") inputCapacitacion inputCapacitacion ) {
+        return capacitacionService.editarCapacitacion(inputCapacitacion);
     }
 
     @MutationMapping
