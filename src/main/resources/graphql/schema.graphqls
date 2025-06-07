@@ -77,6 +77,21 @@ input inputUsuarioGlobal {
     telefono: String
 }
 
+input inputCurso{
+    nombre:String
+    etapas:[inputEtapasCapacitacion]
+}
+input inputEtapasCapacitacion{
+    nombre:String
+    orden:Int
+}
+input inputAgregarCapacitacion{
+    nombre:String!
+    descripcion:String!
+    cursos: [inputCurso]
+}
+
+
 type User {
     id: ID!
     nombre: String!
@@ -249,7 +264,7 @@ type Necesidad {
 type Cursos{
     id: ID!
     nombre: String!
-    etatpas:[Etapas!]
+    etapas:[Etapas!]
     capacitacion:Capacitacion
 }
 
@@ -263,6 +278,7 @@ type Etapas{
 
 type ProgresoVoluntario {
     id: ID!
+    historialClinico:HistorialClinico
     estado: String!
     etapa:Etapas
     fechaInicio: String!
