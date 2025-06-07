@@ -1,6 +1,7 @@
 package com.example.gevopi_back_end.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,4 +29,8 @@ public class Capacitacion {
     @ManyToMany(mappedBy = "capacitaciones")
     @JsonIgnore
     private Set<Reporte> reportes = new HashSet<>();
+
+    @OneToMany(mappedBy = "capacitacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("capacitacion")
+    private Set<Cursos> cursos = new HashSet<>();
 }

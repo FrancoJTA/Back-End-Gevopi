@@ -237,10 +237,34 @@ type Capacitacion {
     id: ID!
     nombre: String!
     descripcion: String
+    cursos:[Cursos]
 }
 
 type Necesidad {
     id: ID!
     tipo: String!
     descripcion: String
+}
+
+type Cursos{
+    id: ID!
+    nombre: String!
+    etatpas:[Etapas!]
+    capacitacion:Capacitacion
+}
+
+type Etapas{
+    id:ID!
+    nombre:String!
+    orden:Int!
+    curso:Cursos
+    progressoVoluntario: [ProgresoVoluntario]
+}
+
+type ProgresoVoluntario {
+    id: ID!
+    estado: String!
+    etapa:Etapas
+    fechaInicio: String!
+    fechaFechaFinalizacion: String!
 }
