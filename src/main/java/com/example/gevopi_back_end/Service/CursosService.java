@@ -44,7 +44,7 @@ public class CursosService {
 
 
             CursoProgreso.Etapa etapaDTO = new CursoProgreso.Etapa();
-            etapaDTO.setId(etapa.getId());
+            etapaDTO.setId(progreso.getId());
             etapaDTO.setNombre(etapa.getNombre());
             etapaDTO.setOrden(etapa.getOrden());
             etapaDTO.setEstado(progreso.getEstado());
@@ -54,5 +54,21 @@ public class CursosService {
 
         }
         return cursosYProgresos;
+    }
+
+    public Boolean cambiarEstadoCurso(int id){
+        Optional<ProgresoVoluntario> progresoVoluntario = progresoRepository.findById(id);
+
+        if (progresoVoluntario.isPresent()) return false;
+
+        ProgresoVoluntario progreso = progresoVoluntario.get();
+
+        if(progreso.getEstado().equals("No Empezado")){
+            progreso.setEstado("En Progreso");
+        }
+        else if(progreso.getEstado().equals("En Progreso")){
+            progreso.setEstado("Completado");
+        }
+        return true;
     }
 }

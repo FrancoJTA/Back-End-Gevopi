@@ -67,6 +67,7 @@ type Mutation {
     agregarUniversidadEvaluacion(idEvaluacion: ID!, idUniversidad: ID!): Evaluacion
     quitarEvaluacionUniversidad(id: ID!): Evaluacion
 
+    cambiarEstadoEtapa(id: ID!): Boolean
 
 
 }
@@ -82,6 +83,7 @@ input inputUsuarioGlobal {
 input inputCurso{
     id:ID
     nombre:String
+    descripcion: String
     etapas:[inputEtapasCapacitacion]
 }
 input inputEtapasCapacitacion{

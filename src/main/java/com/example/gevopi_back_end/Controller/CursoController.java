@@ -5,6 +5,7 @@ import com.example.gevopi_back_end.Entity.Cursos;
 import com.example.gevopi_back_end.Service.CursosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -18,5 +19,10 @@ public class CursoController {
     @QueryMapping
     public List<CursoProgreso> obtenerCursosVoluntario(@Argument int id) {
         return cursosService.obtenerCursosYEtapasConProgreso(id);
+    }
+
+    @MutationMapping
+    public boolean cambiarEstadoEtapa(@Argument int id){
+        return cursosService.cambiarEstadoCurso(id);
     }
 }

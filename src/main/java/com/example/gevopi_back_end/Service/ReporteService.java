@@ -1,5 +1,6 @@
 package com.example.gevopi_back_end.Service;
 
+import com.example.gevopi_back_end.Class.CursoProgreso;
 import com.example.gevopi_back_end.Class.RespuestasPrueba;
 import com.example.gevopi_back_end.Entity.*;
 import com.example.gevopi_back_end.Repository.*;
@@ -39,6 +40,12 @@ public class ReporteService {
     private EmailService emailService;
     @Autowired
     private HistorialClinicoRepository historialClinicoRepository;
+    @Autowired
+    private CursosService cursosService;
+    @Autowired
+    private EtapaRepository etapaRepository;
+    @Autowired
+    private ProgresoRepository progresoRepository;
 
     public long countReportesUltimas24Horas() {
         LocalDateTime fechaLimite = LocalDateTime.now().minusDays(1);
@@ -238,9 +245,20 @@ public class ReporteService {
         if (reporteOpt.isEmpty()) return false;
 
         Reporte reporte = reporteOpt.get();
+        HistorialClinico historialClinico = historialClinicoRepository.findById(reporte.getHistorialClinico().getId()).orElse(null);
         List<Capacitacion> capacitaciones = capacitacionRepository.findAllById(capacitacionIds);
         reporte.getCapacitaciones().addAll(capacitaciones);
-
+        for (Capacitacion capacitacion : capacitaciones) {
+            for(Cursos cursos:capacitacion.getCursos()){
+                for(Etapas etapa:cursos.getEtapas()){
+                    ProgresoVoluntario progreso = new ProgresoVoluntario();
+                    progreso.setEstado("No Empezado");
+                    progreso.setEtapa(etapa);
+                    progreso.setHistorialClinico(historialClinico);
+                    progresoRepository.save(progreso);
+                }
+            };
+        }
         reporteRepository.save(reporte);
         return true;
     }
