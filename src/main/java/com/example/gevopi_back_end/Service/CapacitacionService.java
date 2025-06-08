@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class CapacitacionService {
@@ -69,67 +71,74 @@ public class CapacitacionService {
 
     @Transactional
     public Capacitacion editarCapacitacion(inputCapacitacion input) {
-        System.out.println(input);
         Capacitacion capacitacion = capacitacionRepository.findById(input.getId())
                 .orElseThrow(() -> new RuntimeException("Capacitación no encontrada con ID: " + input.getId()));
 
-        // Editar los campos básicos de la capacitación si no son nulos
         if (input.getNombre() != null && !input.getNombre().isEmpty()) {
             capacitacion.setNombre(input.getNombre());
         }
+
         if (input.getDescripcion() != null && !input.getDescripcion().isEmpty()) {
             capacitacion.setDescripcion(input.getDescripcion());
         }
 
-        // Procesar los cursos y sus etapas
         if (input.getCursos() != null) {
+            Set<Cursos> cursosActualizados = new HashSet<>();
+
             for (inputCapacitacion.inputCurso inputCurso : input.getCursos()) {
-                // Verificar si el curso ya existe
-                Optional<Cursos> cursoOptional = cursoRepository.findById(inputCurso.getId());
-                Cursos curso;
-                if (cursoOptional.isPresent()) {
-                    curso = cursoOptional.get();
-                    // Si es necesario, actualizamos el nombre del curso
-                    if (inputCurso.getNombre() != null && !inputCurso.getNombre().isEmpty()) {
-                        curso.setNombre(inputCurso.getNombre());
-                    }
-                } else {
-                    // Si el curso no existe, creamos uno nuevo
+                Cursos curso = cursoRepository.findById(inputCurso.getId()).orElse(null);
+
+                if (curso == null) {
                     curso = new Cursos();
-                    curso.setNombre(inputCurso.getNombre());
                     curso.setCapacitacion(capacitacion);
-                    capacitacion.getCursos().add(curso);  // Agregar el curso a la capacitación
                 }
 
-                // Procesar las etapas para este curso
-                for (inputCapacitacion.inputCurso.inputEtapaCcapacitacion inputEtapa : inputCurso.getEtapas()) {
-                    Optional<Etapas> etapaOptional = etapaRepository.findById(inputEtapa.getId());
-                    Etapas etapa;
+                if (inputCurso.getNombre() != null && !inputCurso.getNombre().isEmpty()) {
+                    curso.setNombre(inputCurso.getNombre());
+                }
 
-                    if (etapaOptional.isPresent()) {
-                        etapa = etapaOptional.get();
-                        // Si la etapa existe, actualizar su nombre y orden
-                        if (inputEtapa.getNombre() != null && !inputEtapa.getNombre().isEmpty()) {
-                            etapa.setNombre(inputEtapa.getNombre());
-                        }
-                        if (inputEtapa.getOrden() != etapa.getOrden()) {
+                // --- Sincronizar etapas ---
+                if (inputCurso.getEtapas() != null) {
+                    Map<Integer, Etapas> etapasExistentes = curso.getEtapas()
+                            .stream()
+                            .collect(Collectors.toMap(Etapas::getId, Function.identity()));
+
+                    Set<Etapas> etapasFinales = new HashSet<>();
+
+                    for (inputCapacitacion.inputCurso.inputEtapaCcapacitacion inputEtapa : inputCurso.getEtapas()) {
+                        Etapas etapa;
+
+                        if (inputEtapa.getId() != 0 && etapasExistentes.containsKey(inputEtapa.getId())) {
+                            etapa = etapasExistentes.remove(inputEtapa.getId());
+                            if (inputEtapa.getNombre() != null) etapa.setNombre(inputEtapa.getNombre());
                             etapa.setOrden(inputEtapa.getOrden());
+                        } else {
+                            etapa = new Etapas();
+                            etapa.setNombre(inputEtapa.getNombre());
+                            etapa.setOrden(inputEtapa.getOrden());
+                            etapa.setCurso(curso);
                         }
-                    } else {
-                        // Si la etapa no existe, creamos una nueva
-                        etapa = new Etapas();
-                        etapa.setNombre(inputEtapa.getNombre());
-                        etapa.setOrden(inputEtapa.getOrden());
-                        etapa.setCurso(curso);
-                        curso.getEtapas().add(etapa);  // Agregar la etapa al curso
+
+                        etapasFinales.add(etapa);
                     }
+
+                    // Eliminar etapas que ya no están en el input
+                    for (Etapas etapaAEliminar : etapasExistentes.values()) {
+                        etapaRepository.delete(etapaAEliminar);
+                    }
+
+                    curso.setEtapas(etapasFinales);
                 }
+
+                cursosActualizados.add(curso);
             }
+
+            capacitacion.setCursos(cursosActualizados);
         }
 
-        // Guardar la capacitación actualizada (incluye cursos y etapas modificados)
         return capacitacionRepository.save(capacitacion);
     }
+
 
     public boolean eliminarCapacitacion(int id) {
         if (capacitacionRepository.existsById(id)) {
