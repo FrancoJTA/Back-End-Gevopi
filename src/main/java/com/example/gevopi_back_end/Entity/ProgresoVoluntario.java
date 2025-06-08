@@ -30,5 +30,5 @@ public class ProgresoVoluntario {
     private Etapas etapa;
 
     private LocalDateTime fechaInicio;
-    private LocalDateTime fechaFechaFinalizacion;
+    private LocalDateTime fechaFinalizacion;
 }

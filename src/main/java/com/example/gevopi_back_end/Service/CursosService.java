@@ -9,6 +9,7 @@ import com.example.gevopi_back_end.Repository.ProgresoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,26 +50,38 @@ public class CursosService {
             etapaDTO.setOrden(etapa.getOrden());
             etapaDTO.setEstado(progreso.getEstado());
             etapaDTO.setFechaInicio(progreso.getFechaInicio().toString());
-            etapaDTO.setFechaFinalizacion(progreso.getFechaFechaFinalizacion() != null ? progreso.getFechaFechaFinalizacion().toString() : null);
+            etapaDTO.setFechaFinalizacion(progreso.getFechaFinalizacion() != null ? progreso.getFechaFinalizacion().toString() : null);
             cursoProgreso.getEtapas().add(etapaDTO);
 
         }
         return cursosYProgresos;
     }
 
-    public Boolean cambiarEstadoCurso(int id){
+    public Boolean cambiarEstadoCurso(int id) {
         Optional<ProgresoVoluntario> progresoVoluntario = progresoRepository.findById(id);
 
-        if (progresoVoluntario.isPresent()) return false;
+        if (progresoVoluntario.isEmpty()) {
+            return false; // No existe
+        }
 
         ProgresoVoluntario progreso = progresoVoluntario.get();
+        LocalDateTime now = LocalDateTime.now();
 
-        if(progreso.getEstado().equals("No Empezado")){
-            progreso.setEstado("En Progreso");
+        switch (progreso.getEstado()) {
+            case "No Empezado" -> {
+                progreso.setEstado("En Progreso");
+                progreso.setFechaInicio(now);
+            }
+            case "En Progreso" -> {
+                progreso.setEstado("Completado");
+                progreso.setFechaFinalizacion(now);
+            }
+            default -> {
+                return false;
+            }
         }
-        else if(progreso.getEstado().equals("En Progreso")){
-            progreso.setEstado("Completado");
-        }
+
+        progresoRepository.save(progreso); // 🧠 importante: guardar los cambios
         return true;
     }
 }
