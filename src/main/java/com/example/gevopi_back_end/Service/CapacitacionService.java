@@ -94,6 +94,7 @@ public class CapacitacionService {
 
                 curso.setNombre(inputCurso.getNombre());
 
+                // Procesamiento de etapas
                 if (inputCurso.getEtapas() != null) {
                     Map<Integer, Etapas> etapasExistentes = curso.getEtapas().stream()
                             .collect(Collectors.toMap(Etapas::getId, Function.identity()));
@@ -114,6 +115,7 @@ public class CapacitacionService {
                             etapa.setCurso(curso);
                         }
 
+                        etapaRepository.save(etapa); // 🔥 persistir cada etapa
                         etapasFinales.add(etapa);
                     }
 
@@ -121,20 +123,21 @@ public class CapacitacionService {
                         etapaRepository.delete(etapaAEliminar);
                     }
 
-                    curso.getEtapas().clear();                // 🛠 Clave
-                    curso.getEtapas().addAll(etapasFinales);  // 🛠 Clave
+                    curso.getEtapas().clear();
+                    curso.getEtapas().addAll(etapasFinales);
                 }
 
+                cursoRepository.save(curso); // 🔥 persistir cada curso
                 cursosActualizados.add(curso);
             }
 
-            capacitacion.getCursos().clear();               // 🛠 Clave
-            capacitacion.getCursos().addAll(cursosActualizados); // 🛠 Clave
+            capacitacion.getCursos().clear();
+            capacitacion.getCursos().addAll(cursosActualizados);
         }
-
 
         return capacitacionRepository.save(capacitacion);
     }
+
 
 
     public boolean eliminarCapacitacion(int id) {
