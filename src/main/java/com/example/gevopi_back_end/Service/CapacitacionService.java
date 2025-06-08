@@ -26,7 +26,6 @@ public class CapacitacionService {
 
     @Transactional
     public Capacitacion crearCapacitacion(inputCapacitacion input) {
-        // Crear la entidad de Capacitacion
         Capacitacion capacitacion = new Capacitacion();
         capacitacion.setNombre(input.getNombre());
         capacitacion.setDescripcion(input.getDescripcion());
@@ -39,24 +38,24 @@ public class CapacitacionService {
                 curso.setNombre(inputCurso.getNombre());
                 curso.setCapacitacion(capacitacion);
 
-                curso.setEtapas(new HashSet<>());
-
+                Set<Etapas> etapas = new HashSet<>();
                 if (inputCurso.getEtapas() != null && !inputCurso.getEtapas().isEmpty()) {
                     for (inputCapacitacion.inputCurso.inputEtapaCcapacitacion inputEtapa : inputCurso.getEtapas()) {
                         Etapas etapa = new Etapas();
                         etapa.setNombre(inputEtapa.getNombre());
                         etapa.setOrden(inputEtapa.getOrden());
                         etapa.setCurso(curso);
-                        curso.getEtapas().add(etapa);
+                        etapas.add(etapa);
                     }
                 }
 
-                cursoRepository.save(curso);
+                curso.setEtapas(etapas);
+                cursoRepository.save(curso); // Etapas se deben guardar por cascada
                 capacitacion.getCursos().add(curso);
             }
         }
 
-        return capacitacionRepository.save(capacitacion);
+        return capacitacion;
     }
 
     public List<Capacitacion> obtenerCapacitaciones() {
