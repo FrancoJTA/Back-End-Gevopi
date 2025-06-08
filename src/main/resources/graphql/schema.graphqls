@@ -24,7 +24,7 @@ type Query {
 
     estadoEvaluacion(id: Int!):Boolean
 
-    obtenerCursosVoluntario(id: ID!):[CursoProgreso]
+    obtenerCursosVoluntario(id: Int!):[CursoProgreso]
 }
 
 type Mutation {
