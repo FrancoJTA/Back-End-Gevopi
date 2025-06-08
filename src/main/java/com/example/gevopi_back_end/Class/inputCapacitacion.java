@@ -13,6 +13,7 @@ public class inputCapacitacion {
     public static class inputCurso {
         private int id;
         private String nombre;
+        private String descripcion;
         private List<inputEtapaCcapacitacion> etapas;
         @Data
         public static class inputEtapaCcapacitacion {

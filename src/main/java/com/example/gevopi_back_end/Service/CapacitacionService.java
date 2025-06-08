@@ -39,6 +39,7 @@ public class CapacitacionService {
                 // Crear curso, asociarlo a la capacitación y guardar primero
                 Cursos curso = new Cursos();
                 curso.setNombre(inputCurso.getNombre());
+                curso.setDescripcion(inputCurso.getDescripcion());
                 curso.setCapacitacion(capacitacion);
                 curso = cursoRepository.save(curso); // Guardar curso sin etapas
 
