@@ -23,6 +23,7 @@ public class CapacitacionController {
 
     @MutationMapping
     public Capacitacion crearCapacitacion(@Argument("input") inputCapacitacion inputCapacitacion ) {
+        System.out.println(inputCapacitacion);
         return capacitacionService.crearCapacitacion(inputCapacitacion);
     }
 
