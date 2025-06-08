@@ -8,6 +8,7 @@ import java.util.List;
 public class CursoProgreso {
     private Integer id;
     private String nombre;
+    private String descripcion;
     private List<Etapa> etapas;
     @Data
     public static class Etapa {

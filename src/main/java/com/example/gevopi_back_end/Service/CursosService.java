@@ -37,6 +37,7 @@ public class CursosService {
                 CursoProgreso cursoProgreso = new CursoProgreso();
                 cursoProgreso.setId(curso.getId());
                 cursoProgreso.setNombre(curso.getNombre());
+                cursoProgreso.setDescripcion(curso.getDescripcion());
                 cursoProgreso.setEtapas(new ArrayList<>());
                 cursosYProgresos.add(cursoProgreso);
                 cursoProgresoOptional = Optional.of(cursoProgreso);

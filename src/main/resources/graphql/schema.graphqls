@@ -303,5 +303,6 @@ type EtapaProgreso{
 type CursoProgreso{
     id:ID!
     nombre:String
+    descripcion:String
     etapas:[EtapaProgreso]
 }
