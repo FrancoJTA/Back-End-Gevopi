@@ -39,7 +39,6 @@ public class CapacitacionService {
                 curso.setCapacitacion(capacitacion);
 
                 Set<Etapas> etapas = new HashSet<>();
-                System.out.println(inputCurso);
                 if (inputCurso.getEtapas() != null && !inputCurso.getEtapas().isEmpty()) {
                     for (inputCapacitacion.inputCurso.inputEtapaCcapacitacion inputEtapa : inputCurso.getEtapas()) {
                         Etapas etapa = new Etapas();
@@ -50,8 +49,9 @@ public class CapacitacionService {
                     }
                 }
 
+                System.out.println(etapas);
                 curso.setEtapas(etapas);
-                cursoRepository.save(curso); // Etapas se deben guardar por cascada
+                cursoRepository.save(curso);
                 capacitacion.getCursos().add(curso);
             }
         }
