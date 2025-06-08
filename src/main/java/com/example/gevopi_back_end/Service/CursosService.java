@@ -49,7 +49,7 @@ public class CursosService {
             etapaDTO.setNombre(etapa.getNombre());
             etapaDTO.setOrden(etapa.getOrden());
             etapaDTO.setEstado(progreso.getEstado());
-            etapaDTO.setFechaInicio(progreso.getFechaInicio().toString());
+            etapaDTO.setFechaInicio(progreso.getFechaInicio()!= null ?progreso.getFechaInicio().toString(): null);
             etapaDTO.setFechaFinalizacion(progreso.getFechaFinalizacion() != null ? progreso.getFechaFinalizacion().toString() : null);
             cursoProgreso.getEtapas().add(etapaDTO);
 
