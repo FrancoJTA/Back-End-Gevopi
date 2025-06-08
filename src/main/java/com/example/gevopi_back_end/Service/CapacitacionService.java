@@ -26,34 +26,36 @@ public class CapacitacionService {
 
     @Transactional
     public Capacitacion crearCapacitacion(inputCapacitacion input) {
+        // Crear y guardar la capacitación primero
         Capacitacion capacitacion = new Capacitacion();
         capacitacion.setNombre(input.getNombre());
         capacitacion.setDescripcion(input.getDescripcion());
-
         capacitacion = capacitacionRepository.save(capacitacion);
 
         if (input.getCursos() != null && !input.getCursos().isEmpty()) {
             for (inputCapacitacion.inputCurso inputCurso : input.getCursos()) {
+                // Crear curso, asociarlo a la capacitación y guardar primero
                 Cursos curso = new Cursos();
                 curso.setNombre(inputCurso.getNombre());
                 curso.setCapacitacion(capacitacion);
+                curso = cursoRepository.save(curso); // Guardar curso sin etapas
 
-                Set<Etapas> etapas = new HashSet<>();
+                // Crear y guardar cada etapa asociada al curso ya persistido
                 if (inputCurso.getEtapas() != null && !inputCurso.getEtapas().isEmpty()) {
                     for (inputCapacitacion.inputCurso.inputEtapaCcapacitacion inputEtapa : inputCurso.getEtapas()) {
                         Etapas etapa = new Etapas();
                         etapa.setNombre(inputEtapa.getNombre());
                         etapa.setOrden(inputEtapa.getOrden());
-                        etapa.setCurso(curso);
-                        etapas.add(etapa);
+                        etapa.setCurso(curso); // Asociar etapa al curso ya guardado
+                        etapaRepository.save(etapa); // Guardar etapa individualmente
                     }
                 }
 
-                curso.setEtapas(etapas);
-                cursoRepository.save(curso);
+                // Asociar curso a la capacitación después de guardar
                 capacitacion.getCursos().add(curso);
             }
         }
+
         return capacitacion;
     }
 
