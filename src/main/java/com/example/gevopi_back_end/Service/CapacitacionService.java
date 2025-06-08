@@ -46,7 +46,7 @@ public class CapacitacionService {
                         etapa.setOrden(inputEtapa.getOrden());
                         etapa.setCurso(curso);
                         etapas.add(etapa);
-                        System.out.println(etapa);
+                        System.out.println(etapa.getNombre());
                     }
                 }
 
