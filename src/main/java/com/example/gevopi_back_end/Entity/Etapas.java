@@ -26,7 +26,8 @@ public class Etapas {
     private int orden;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_Curso")
+    @JoinColumn(name = "id_curso")
+    @JsonIgnoreProperties("etapas")
     private Cursos curso;
 
     @OneToMany(mappedBy = "etapa", cascade = CascadeType.ALL, orphanRemoval = true)
