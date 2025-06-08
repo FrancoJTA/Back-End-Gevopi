@@ -87,20 +87,15 @@ public class CapacitacionService {
 
             for (inputCapacitacion.inputCurso inputCurso : input.getCursos()) {
                 Cursos curso = cursoRepository.findById(inputCurso.getId()).orElse(null);
-
                 if (curso == null) {
                     curso = new Cursos();
                     curso.setCapacitacion(capacitacion);
                 }
 
-                if (inputCurso.getNombre() != null && !inputCurso.getNombre().isEmpty()) {
-                    curso.setNombre(inputCurso.getNombre());
-                }
+                curso.setNombre(inputCurso.getNombre());
 
-                // --- Sincronizar etapas ---
                 if (inputCurso.getEtapas() != null) {
-                    Map<Integer, Etapas> etapasExistentes = curso.getEtapas()
-                            .stream()
+                    Map<Integer, Etapas> etapasExistentes = curso.getEtapas().stream()
                             .collect(Collectors.toMap(Etapas::getId, Function.identity()));
 
                     Set<Etapas> etapasFinales = new HashSet<>();
@@ -110,7 +105,7 @@ public class CapacitacionService {
 
                         if (inputEtapa.getId() != 0 && etapasExistentes.containsKey(inputEtapa.getId())) {
                             etapa = etapasExistentes.remove(inputEtapa.getId());
-                            if (inputEtapa.getNombre() != null) etapa.setNombre(inputEtapa.getNombre());
+                            etapa.setNombre(inputEtapa.getNombre());
                             etapa.setOrden(inputEtapa.getOrden());
                         } else {
                             etapa = new Etapas();
@@ -122,19 +117,21 @@ public class CapacitacionService {
                         etapasFinales.add(etapa);
                     }
 
-                    // Eliminar etapas que ya no están en el input
                     for (Etapas etapaAEliminar : etapasExistentes.values()) {
                         etapaRepository.delete(etapaAEliminar);
                     }
 
-                    curso.setEtapas(etapasFinales);
+                    curso.getEtapas().clear();                // 🛠 Clave
+                    curso.getEtapas().addAll(etapasFinales);  // 🛠 Clave
                 }
 
                 cursosActualizados.add(curso);
             }
 
-            capacitacion.setCursos(cursosActualizados);
+            capacitacion.getCursos().clear();               // 🛠 Clave
+            capacitacion.getCursos().addAll(cursosActualizados); // 🛠 Clave
         }
+
 
         return capacitacionRepository.save(capacitacion);
     }

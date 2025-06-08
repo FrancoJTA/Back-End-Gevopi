@@ -22,6 +22,7 @@ public class Cursos {
     private Integer id;
 
     private String nombre;
+    private String descripcion;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("curso")
