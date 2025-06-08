@@ -69,7 +69,7 @@ public class CapacitacionService {
 
     @Transactional
     public Capacitacion editarCapacitacion(inputCapacitacion input) {
-        // Buscar la capacitación por ID
+        System.out.println(input);
         Capacitacion capacitacion = capacitacionRepository.findById(input.getId())
                 .orElseThrow(() -> new RuntimeException("Capacitación no encontrada con ID: " + input.getId()));
 
