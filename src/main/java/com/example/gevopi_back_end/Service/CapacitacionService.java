@@ -39,6 +39,7 @@ public class CapacitacionService {
                 curso.setCapacitacion(capacitacion);
 
                 Set<Etapas> etapas = new HashSet<>();
+                System.out.println(inputCurso);
                 if (inputCurso.getEtapas() != null && !inputCurso.getEtapas().isEmpty()) {
                     for (inputCapacitacion.inputCurso.inputEtapaCcapacitacion inputEtapa : inputCurso.getEtapas()) {
                         Etapas etapa = new Etapas();
