@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     boolean existsByEmailOrCi(String email, String ci);
     Optional<Usuario> findByCi(String ci); // Usa findByCI si el campo en la entidad es "CI"
+
+    boolean existsByEmail(String email);
 }
