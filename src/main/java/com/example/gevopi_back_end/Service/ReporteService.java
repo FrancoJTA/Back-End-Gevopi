@@ -118,7 +118,7 @@ public class ReporteService {
             evaluacionRepository.save(evaluacion1);
             evaluacionRepository.save(evaluacion2);
 
-            String url = "http://localhost:3000/FormularioVoluntario/"+nuevoReporte.getId()+"/"+evaluacion1.getId()+"/"+evaluacion2.getId();
+            String url = "http://localhost:4000/FormularioVoluntario/"+nuevoReporte.getId()+"/"+evaluacion1.getId()+"/"+evaluacion2.getId();
             emailService.sendFormularioEmail(historial.getEmail(),"Formulario Medico",url);
         }
 

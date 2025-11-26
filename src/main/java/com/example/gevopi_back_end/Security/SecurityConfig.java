@@ -49,7 +49,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         // Configura los orígenes permitidos (ajusta según tus necesidades)
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",  // Frontend local
+                "http://localhost:4000",  // Frontend local
                 "https://tudominio.com"    // Producción
         ));
         // Métodos HTTP permitidos
